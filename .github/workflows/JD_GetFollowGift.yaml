@@ -5,11 +5,6 @@ on:
   schedule:
     - cron: "0 8 * * *"
 
-env:
-  TZ: Asia/Shanghai
-  JD_COOKIE: ${{ secrets.JD_COOKIE }}
-  PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,3 +26,7 @@ jobs:
           wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/getFollowGifts/jd_getFollowGift.py
           pip3 install requests
           python3 jd_getFollowGift.py
+        env:
+          TZ: Asia/Shanghai
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905

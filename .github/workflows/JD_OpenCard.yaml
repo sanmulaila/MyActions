@@ -5,12 +5,6 @@ on:
   schedule:
     - cron: "6,36 7,14 * * *"
 
-env:
-  TZ: Asia/Shanghai
-  JD_COOKIE: ${{ secrets.JD_COOKIE }}
-  PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
-  openCardBean: 3
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,3 +26,8 @@ jobs:
           wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/OpenCard/jd_OpenCard.py
           pip3 install requests
           python3 jd_OpenCard.py
+        env:
+          TZ: Asia/Shanghai
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
+          openCardBean: 3

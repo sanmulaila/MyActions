@@ -1,4 +1,4 @@
-name: JD_QJD
+name: JD_CashHelp
 
 on:
   workflow_dispatch:
@@ -21,12 +21,12 @@ jobs:
           python-version: "3.x"
           architecture: "x64"
 
-      - name: JD QJD
+      - name: JD CashHelp
         run: |
-          wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/jd_qjd.py
-          sed -e "s|'Your JD_User', '买买买'|'jd_5f9bd8e786798', 'Ryanjiena', 'RyanjienatxX', 'jd_JsMOGnzpJDPw', 'jd_QbKFesrCcBOn', 'jd_jACaJtmYXgCQ'|g" -i.bak jd_qjd.py
+          wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/jd_cashHelp.py
+          sed -e "s|'Your JD_User', '买买买'|'jd_5f9bd8e786798', 'Ryanjiena', 'RyanjienatxX', 'jd_JsMOGnzpJDPw', 'jd_QbKFesrCcBOn', 'jd_jACaJtmYXgCQ'|g" -i.bak jd_cashHelp.py
           python3 -m pip install requests
-          python3 jd_qjd.py
+          python3 jd_cashHelp.py
         env:
           TZ: Asia/Shanghai
           JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
