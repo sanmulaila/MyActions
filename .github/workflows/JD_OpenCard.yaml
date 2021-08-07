@@ -27,7 +27,7 @@ jobs:
           python-version: "3.x"
           architecture: "x64"
 
-      - name: JD Open Card
+      - name: JD OpenCard
         run: |
           wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/OpenCard/jd_OpenCard.py
           pip3 install requests
