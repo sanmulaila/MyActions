@@ -3,7 +3,7 @@ name: JD_QJD
 on:
   workflow_dispatch:
   schedule:
-    - cron: "45 59 23 * *"
+    - cron: "45 59 23 * * *"
 
 env:
   TZ: Asia/Shanghai
