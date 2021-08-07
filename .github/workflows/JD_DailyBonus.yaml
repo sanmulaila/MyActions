@@ -3,7 +3,7 @@ name: JD_OpenCard
 on:
   workflow_dispatch:
   schedule:
-    - cron: "2,32 7,14 * * *"
+    - cron: "6,36 7,14 * * *"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,6 +26,7 @@ jobs:
           PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
           openCardBean: 3
         run: |
+        wget https://github.com/curtinlv/JD-Script/raw/main/OpenCard/jd_OpenCard.py
         pip3 install requests
         python3 jd_OpenCard.py
     
