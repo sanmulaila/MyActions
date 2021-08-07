@@ -29,8 +29,6 @@ jobs:
       - name: JD QJD
         run: |
           wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/jd_qjd.py
-          sed -e "s|'Your JD_User', '买买买'|'jd_5f9bd8e786798', 'Ryanjiena', 'RyanjienatxX', 'jd_JsMOGnzpJDPw', 'jd_QbKFesrCcBOn', 'jd_jACaJtmYXgCQ'|g" \
-              -i.bak \
-              jd_qjd.py
+          sed -e "s|'Your JD_User', '买买买'|'jd_5f9bd8e786798', 'Ryanjiena', 'RyanjienatxX', 'jd_JsMOGnzpJDPw', 'jd_QbKFesrCcBOn', 'jd_jACaJtmYXgCQ'|g" -i.bak jd_qjd.py
           python3 -m pip install requests
           python3 jd_qjd.py
