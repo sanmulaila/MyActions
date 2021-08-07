@@ -1,0 +1,31 @@
+name: JD_OpenCard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "2,32 7,14 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ '3.x' ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Setup Python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' 
+          architecture: 'x64'
+
+      - name: JD_OpenCard
+        env:
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
+          openCardBean: 3
+        run: |
+        pip3 install requests
+        python3 jd_OpenCard.py
+    
