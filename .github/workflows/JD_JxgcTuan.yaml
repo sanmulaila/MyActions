@@ -23,8 +23,7 @@ jobs:
 
       - name: JD JxgcTuan
         run: |
-          wget https://raw.githubusercontent.com/curtinlv/JD-Script/main/jd_jxgc_tuan.py
-          sed -e "s|jxgc_kaituan = []|jxgc_kaituan = ['jd_5f9bd8e786798', 'Ryanjiena', 'RyanjienatxX']|g" -i.bak jd_cashHelp.py
+          wget https://raw.githubusercontent.com/JaimeZeng/MyActions/main/jd_jxgc_tuan.py
           python3 -m pip install requests
           python3 jd_jxgc_tuan.py
         env:
