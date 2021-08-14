@@ -23,7 +23,7 @@ jobs:
 
       - name: JD JxgcTuan
         run: |
-          wget https://raw.githubusercontent.com/JaimeZeng/MyActions/main/jd_jxgc_tuan.py
+          # wget https://raw.githubusercontent.com/JaimeZeng/MyActions/main/jd_jxgc_tuan.py
           python3 -m pip install requests
           python3 jd_jxgc_tuan.py
         env:
