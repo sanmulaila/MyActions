@@ -1,9 +1,9 @@
-name: JD_BeanChange
+name: Wealth_Island
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 6,20 * * *"
+  schedule:
+    - cron: "1,16,31,46 17-23,0-16 * * *"
 
 jobs:
   build:
@@ -20,15 +20,11 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install Dependencies
+      - name: Install Dependencies And Run
         run: |
           cd scripts/
           npm install
-
-      - name: JD BeanChange
-        run: |
-          node jd_bean_change.js
+          node gua_wealth_island.js
         env:
           TZ: Asia/Shanghai
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
