@@ -107,7 +107,7 @@ if (process.env.PUSH_KEY_WECOM_URL) {
     SCKEY_WECOM_URL = process.env.PUSH_KEY_WECOM_URL;
 }
 
-if (process.env.QMSGSKEY) {
+if (process.env.QMSG_SKEY) {
     QMSG_SKEY = process.env.QMSG_SKEY;
 }
 
