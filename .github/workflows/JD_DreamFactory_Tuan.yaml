@@ -1,9 +1,9 @@
-name: JD_BeanChange
+name: JD DreamFactory Tuan
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 1,9 * * *"
+    - cron: "1,6 16 * * *"
 
 jobs:
   build:
@@ -24,10 +24,10 @@ jobs:
         run: |
           cd scripts/
           npm install
-          node jd_bean_change.js
+          node jd_dreamFactory_tuan.js
         env:
           TZ: Asia/Shanghai
+          JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
+          OPEN_DREAMFACTORY_TUAN: 1,2
           QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
           QMSG_MODE: group
-          JD_COOKIE: ${{ secrets.JD_COOKIE3 }}
-          # PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
