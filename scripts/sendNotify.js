@@ -77,9 +77,9 @@ let PUSH_PLUS_USER = "";
 
 // =======================================QMSG酱通知设置区域===========================================
 //此处填你申请的QMSG_KEY. 官方文档：https://qmsg.zendee.cn/
-// QMSG_SKEY 可在管理台查看: https://qmsg.zendee.cn/me.html
+// QMSG_KEY 可在管理台查看: https://qmsg.zendee.cn/me.html
 // QMSG_MODE  send 私聊消息推送, group 群消息推送
-let QMSG_SKEY = "";
+let QMSG_KEY = "";
 let QMSG_MODE = "";
 
 // =======================================cq-gohttp设置区域=======================================
@@ -107,8 +107,8 @@ if (process.env.PUSH_KEY_WECOM_URL) {
     SCKEY_WECOM_URL = process.env.PUSH_KEY_WECOM_URL;
 }
 
-if (process.env.QMSG_SKEY) {
-    QMSG_SKEY = process.env.QMSG_SKEY;
+if (process.env.QMSG_KEY) {
+    QMSG_KEY = process.env.QMSG_KEY;
 }
 
 if (process.env.QMSG_MODE) {
@@ -416,7 +416,7 @@ function qmsgNotify(text, desp, time = 2100) {
     return new Promise((resolve) => {
         if (QMSG_KEY) {
             const options = {
-                url: `https://qmsg.zendee.cn/group/e6f2c5b0021c68f8c70f98219954e717`,
+                url: `https://qmsg.zendee.cn/${QMSG_MODE}/${QMSG_KEY}`,
                 body: `msg=${text}\n\n${desp}`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
