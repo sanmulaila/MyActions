@@ -2,8 +2,8 @@ name: JD_BeanChange
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: "0 6,20 * * *"
+  schedule:
+    - cron: "0 1 * * *"
 
 jobs:
   build:
@@ -30,5 +30,7 @@ jobs:
           node jd_bean_change.js
         env:
           TZ: Asia/Shanghai
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
+          QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
+          QMSG_MODE: group
+          JD_COOKIE: ${{ secrets.JD_COOKIE3 }}
+          # PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
