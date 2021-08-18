@@ -1,4 +1,4 @@
-name: JD_OpenCard
+name: JD OpenCard
 
 on:
   workflow_dispatch:

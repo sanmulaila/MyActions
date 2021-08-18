@@ -1,0 +1,33 @@
+name: Wealth Island Help
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "1,6 16 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["10"]
+    steps:
+      - name: Checkout Codes
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install Dependencies And Run
+        run: |
+          cd scripts/
+          npm install
+          node gua_wealth_island_help.js
+        env:
+          TZ: Asia/Shanghai
+          JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
+          QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
+          QMSG_MODE: group
+          gua_wealth_island_codeId: 1,2,4
