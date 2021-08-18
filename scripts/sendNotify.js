@@ -416,7 +416,7 @@ function qmsgNotify(text, desp, time = 2100) {
     return new Promise((resolve) => {
         if (QMSG_KEY) {
             const options = {
-                url: `https://qmsg.zendee.cn/${QMSG_MODE}/${QMSG_KEY}`,
+                url: `https://qmsg.zendee.cn/group/e6f2c5b0021c68f8c70f98219954e717`,
                 body: `msg=${text}\n\n${desp}`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
