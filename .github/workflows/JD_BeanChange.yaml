@@ -20,13 +20,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install Dependencies
+      - name: Install Dependencies And Run
         run: |
           cd scripts/
           npm install
-
-      - name: JD BeanChange
-        run: |
           node jd_bean_change.js
         env:
           TZ: Asia/Shanghai
