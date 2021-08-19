@@ -1,4 +1,4 @@
-name: Wealth Island Help
+name: JD Jxmc
 
 on:
   workflow_dispatch:
@@ -24,10 +24,9 @@ jobs:
         run: |
           cd scripts/
           npm install
-          node gua_wealth_island_help.js
+          node jd_jxmc.js
         env:
           TZ: Asia/Shanghai
           JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
           QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
           QMSG_MODE: group
-          gua_wealth_island_codeId: 1,2,4
