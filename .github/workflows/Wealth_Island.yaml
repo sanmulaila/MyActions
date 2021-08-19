@@ -30,3 +30,4 @@ jobs:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
           QMSG_MODE: group
+          JD_CFD_LVL_UP: false
