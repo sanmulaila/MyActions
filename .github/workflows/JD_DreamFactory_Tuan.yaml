@@ -3,7 +3,7 @@ name: JD DreamFactory Tuan
 on:
   workflow_dispatch:
   schedule:
-    - cron: "1,6 16 * * *"
+    - cron: "56,59 15 * * *"
 
 jobs:
   build:
