@@ -1,9 +1,9 @@
-name: JD Jxmc
+name: JD AllBeanChange
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "56 15 * * *"
+    - cron: "1 1,9 * * *"
 
 jobs:
   build:
@@ -24,9 +24,10 @@ jobs:
         run: |
           cd scripts/
           npm install
-          node jd_jxmc.js
+          node jd_all_bean_change.js
         env:
           TZ: Asia/Shanghai
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
           QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
           QMSG_MODE: group
+          JD_COOKIE: ${{ secrets.JD_COOKIE3 }}
+          # PUSH_PLUS_TOKEN: b58b3b08d7b14fdfb3205934495a9905
