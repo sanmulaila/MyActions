@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: "0 4 * * *" # 16:00 -> 00:00
 
+env:
+  TZ: Asia/Shanghai
+  MI_USER: ${{ secrets.MI_USER }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,21 +29,8 @@ jobs:
         run: |
           cd scripts/
           pip3 install requests
-          python3 mimotion.py
-        env:
-          TZ: Asia/Shanghai
-          MI_USER: ${{ secrets.MI_USER }}
-          MI_PWD: 3v4JEuVRYyb3Eh#WCaRTLppj2YTKU
-          STEP: 22000-25000
-          PMOD: tg
-          PKEY: 1904539307:AAFzLkpxpalwsNd0ArGBJB46im-M07ALtkE@799728773
-
-
-
-
-
-
-
-
-
-
+          export MI_USER="${{ secrets.MI_USER }}"  
+          export MI_PWD="3v4JEuVRYyb3Eh#WCaRTLppj2YTKU"  
+          export STEP="1980-3295"  
+          export PMODE="tg" 
+          export PKEY="1904539307:AAFzLkpxpalwsNd0ArGBJB46im-M07ALtkE@799728773"
