@@ -1,0 +1,44 @@
+name: Mi Motion
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *" # 16:00 -> 00:00
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.x"]
+    steps:
+      - name: Checkout Codes
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+
+      - name: Mi Motion
+        run: |
+          pip3 install requests
+          python3 mimotion.py
+        env:
+          TZ: Asia/Shanghai
+          MI_USER: ${{ secrets.MI_USER }}
+          MI_PWD: 3v4JEuVRYyb3Eh#WCaRTLppj2YTKU
+          STEP: 22000-25000
+          PMOD: tg
+          PKEY: 1904539307:AAFzLkpxpalwsNd0ArGBJB46im-M07ALtkE@799728773
+
+
+
+
+
+
+
+
+
+
