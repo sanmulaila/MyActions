@@ -31,6 +31,7 @@ jobs:
           pip3 install requests
           export MI_USER="${{ secrets.MI_USER }}"  
           export MI_PWD="3v4JEuVRYyb3Eh#WCaRTLppj2YTKU"  
-          export STEP="1980-3295"  
+          export STEP="22000-24000"  
           export PMODE="tg" 
           export PKEY="1904539307:AAFzLkpxpalwsNd0ArGBJB46im-M07ALtkE@799728773"
+          python3 mimotion.py
