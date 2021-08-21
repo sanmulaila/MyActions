@@ -23,6 +23,7 @@ jobs:
 
       - name: Mi Motion
         run: |
+          cd scripts/
           pip3 install requests
           python3 mimotion.py
         env:
