@@ -1,4 +1,4 @@
-name: Jx Sign
+name: JD RedPacket
 
 on:
   workflow_dispatch:
@@ -24,11 +24,11 @@ jobs:
         run: |
           cd scripts/
           npm install
-          node jx_sign.js
+          node jd_redPacket.js
         env:
           TZ: Asia/Shanghai
           JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
-          TG_BOT_TOKEN: 1949709459:AAGP8xZlLtJCd_coJ8l_o4PF0OVxX1imfQw
+          TG_BOT_TOKEN: 1904539307:AAFzLkpxpalwsNd0ArGBJB46im-M07ALtkE
           TG_USER_ID: 799728773
           QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
           QMSG_MODE: group

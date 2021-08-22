@@ -9,38 +9,40 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-    - name: Create local changes
-      run: |
-        cd scripts/
-        curl -O https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js
-        curl -o gua_wealth_island.js https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_cfd_new.js
-        curl -O https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_all_bean_change.js
-        curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_bean_change.js
-        curl -o jd_dreamFactory_tuan.js https://raw.githubusercontent.com/star261/jd/main/scripts/star_dreamFactory_tuan.js 
-        curl -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxmc.js
-        curl -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py
-        curl -O https://raw.githubusercontent.com/shufflewzc/faker2/main/package.json
-        curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/USER_AGENTS.js
-        curl -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js
-        sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i *.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i gua_wealth_island_help.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i gua_wealth_island.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_all_bean_change.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_bean_change.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_dreamFactory_tuan.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_jxmc.js
-        # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jx_sign.js
-    - name: Commit files
-      run: |
-        git config --local user.email "78083448+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git commit -m "Add changes." -a
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.TOKEN }}
-        branch: ${{ github.ref }}
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+      - name: Create local changes
+        run: |
+          cd scripts/
+          curl -O https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js
+          curl -o gua_wealth_island.js https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_cfd_new.js
+          curl -O https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_all_bean_change.js
+          curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_bean_change.js
+          curl -o jd_dreamFactory_tuan.js https://raw.githubusercontent.com/star261/jd/main/scripts/star_dreamFactory_tuan.js 
+          curl -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxmc.js
+          curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_redPacket.js
+          curl -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py
+          curl -O https://raw.githubusercontent.com/shufflewzc/faker2/main/package.json
+          curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/USER_AGENTS.js
+          curl -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js
+          sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i *.js
+          sed -e "/if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);/d" -i jd_redPacket.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i gua_wealth_island_help.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i gua_wealth_island.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_all_bean_change.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_bean_change.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_dreamFactory_tuan.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jd_jxmc.js
+          # sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i jx_sign.js
+      - name: Commit files
+        run: |
+          git config --local user.email "78083448+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Add changes." -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
