@@ -258,7 +258,7 @@ async function sendNotify(
         iGotNotify(text, desp, params), //iGot
         goCQhttp(text, desp), // go-cqhttp
         qmsgNotify(text, desp), // qmsg
-        wxpusherNotify(text, desp), // wxpusher
+        wxpusherNotify(text, desp) // wxpusher
     ]);
 }
 
@@ -345,7 +345,7 @@ function serverNotify(text, desp, time = 2100) {
                 });
             }, time);
         } else {
-            console.log("\n\n 您未提供 server 酱的 SCKEY, 取消微信推送消息通知🚫\n");
+            console.log("\n您未提供 server 酱的 SCKEY, 取消微信推送消息通知🚫\n");
             resolve();
         }
     });
@@ -393,7 +393,7 @@ function serverWecomNotify(text, desp, time = 2100) {
             }, time);
         } else {
             console.log(
-                "\n\n 您未提供自建 server 酱的 SCKEY, 取消推送自建 server 酱消息通知🚫\n"
+                "\n您未提供自建 server 酱的 SCKEY, 取消推送自建 server 酱消息通知🚫\n"
             );
             resolve();
         }
@@ -865,7 +865,7 @@ function qmsgNotify(text, desp, time = 2100) {
                         } else {
                             data = JSON.parse(data);
                             if (data.code === 0) {
-                                console.log("Qmsg 酱发送通知消息成功 \ n");
+                                console.log("Qmsg 酱发送通知消息成功🚫\n");
                             }
                         }
                     } catch (e) {

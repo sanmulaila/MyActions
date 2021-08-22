@@ -22,6 +22,7 @@ jobs:
           curl -O https://raw.githubusercontent.com/shufflewzc/faker2/main/jd_bean_change_new.js
           curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_bean_change.js
           curl -o jd_dreamFactory_tuan.js https://raw.githubusercontent.com/star261/jd/main/scripts/star_dreamFactory_tuan.js 
+          curl -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js
           curl -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxmc.js
           curl -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_redPacket.js
           curl -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py
