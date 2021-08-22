@@ -2,90 +2,83 @@
  * sendNotify 推送通知功能
  * @param text 通知头
  * @param desp 通知体
- * @param params 某些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
- * @param author 作者仓库等信息  例：`本脚本免费使用 By：xxx`
+ * @param params 某些推送通知方式点击弹窗可跳转, 例：{url: 'https://abc.com'}
+ * @param author 作者仓库等信息  例：` 本脚本免费使用 By：xxx`
  * @returns {Promise<unknown>}
  */
 const querystring = require("querystring");
 const fs = require("fs");
 const $ = new Env();
-const timeout = 15000; //超时时间(单位毫秒)
-// =======================================微信server酱通知设置区域===========================================
-//此处填你申请的SCKEY.
+const timeout = 15000; // 超时时间 (单位毫秒)
+// ======================================= 微信 server 酱通知设置区域 ===========================================
+// 此处填你申请的 SCKEY.
 //(环境变量名 PUSH_KEY)
 let SCKEY = "";
-// 自建serverchan 环境变量名 PUSH_KEY_WECOM
+// 自建 serverchan 环境变量名 PUSH_KEY_WECOM
 let SCKEY_WECOM = "";
-// 自建serverchan 环境变量名 PUSH_KEY_WECOM_URL
+// 自建 serverchan 环境变量名 PUSH_KEY_WECOM_URL
 let SCKEY_WECOM_URL = "";
 
-// =======================================Bark App通知设置区域===========================================
-//此处填你BarkAPP的信息(IP/设备码，例如：https://api.day.app/XXXXXXXX)
+// =======================================Bark App 通知设置区域 ===========================================
+// 此处填你 BarkAPP 的信息 (IP / 设备码, 例如：https://api.day.app/XXXXXXXX)
 let BARK_PUSH = "";
-//BARK app推送铃声,铃声列表去APP查看复制填写
+//BARK app 推送铃声, 铃声列表去 APP 查看复制填写
 let BARK_SOUND = "";
-//BARK app推送消息的分组，默认为”JDHelloWorld”
+//BARK app 推送消息的分组, 默认为”JDHelloWorld”
 let BARK_GROUP = "JDHelloWorld";
 
-// =======================================telegram机器人通知设置区域===========================================
-//此处填你telegram bot 的Token，telegram机器人通知推送必填项.例如：1077xxx4424:AAFjv0FcqxxxxxxgEMGfi22B4yh15R5uw
+// =======================================telegram 机器人通知设置区域 ===========================================
+// 此处填你 telegram bot 的 Token, telegram 机器人通知推送必填项. 例如：1077xxx4424:AAFjv0FcqxxxxxxgEMGfi22B4yh15R5uw
 //(环境变量名 TG_BOT_TOKEN)
 let TG_BOT_TOKEN = "";
-//此处填你接收通知消息的telegram用户的id，telegram机器人通知推送必填项.例如：129xxx206
+// 此处填你接收通知消息的 telegram 用户的 id, telegram 机器人通知推送必填项. 例如：129xxx206
 //(环境变量名 TG_USER_ID)
 let TG_USER_ID = "";
-//tg推送HTTP代理设置(不懂可忽略,telegram机器人通知推送功能中非必填)
-let TG_PROXY_HOST = ""; //例如:127.0.0.1(环境变量名:TG_PROXY_HOST)
-let TG_PROXY_PORT = ""; //例如:1080(环境变量名:TG_PROXY_PORT)
-let TG_PROXY_AUTH = ""; //tg代理配置认证参数
-//Telegram api自建的反向代理地址(不懂可忽略,telegram机器人通知推送功能中非必填),默认tg官方api(环境变量名:TG_API_HOST)
+//tg 推送 HTTP 代理设置 (不懂可忽略, telegram 机器人通知推送功能中非必填)
+let TG_PROXY_HOST = ""; // 例如: 127.0.0.1(环境变量名: TG_PROXY_HOST)
+let TG_PROXY_PORT = ""; // 例如: 1080(环境变量名: TG_PROXY_PORT)
+let TG_PROXY_AUTH = ""; //tg 代理配置认证参数
+//Telegram api 自建的反向代理地址 (不懂可忽略, telegram 机器人通知推送功能中非必填), 默认 tg 官方 api(环境变量名: TG_API_HOST)
 let TG_API_HOST = "api.telegram.org";
-// =======================================钉钉机器人通知设置区域===========================================
-//此处填你钉钉 bot 的webhook，例如：5a544165465465645d0f31dca676e7bd07415asdasd
+// ======================================= 钉钉机器人通知设置区域 ===========================================
+// 此处填你钉钉 bot 的 webhook, 例如：5a544165465465645d0f31dca676e7bd07415asdasd
 //(环境变量名 DD_BOT_TOKEN)
 let DD_BOT_TOKEN = "";
-//密钥，机器人安全设置页面，加签一栏下面显示的SEC开头的字符串
+// 密钥, 机器人安全设置页面, 加签一栏下面显示的 SEC 开头的字符串
 let DD_BOT_SECRET = "";
 
-// =======================================企业微信机器人通知设置区域===========================================
-//此处填你企业微信机器人的 webhook(详见文档 https://work.weixin.qq.com/api/doc/90000/90136/91770)，例如：693a91f6-7xxx-4bc4-97a0-0ec2sifa5aaa
+// ======================================= 企业微信机器人通知设置区域 ===========================================
+// 此处填你企业微信机器人的 webhook(详见文档 https://work.weixin.qq.com/api/doc/90000/90136/91770), 例如：693a91f6-7xxx-4bc4-97a0-0ec2sifa5aaa
 //(环境变量名 QYWX_KEY)
 let QYWX_KEY = "";
 
-// =======================================企业微信应用消息通知设置区域===========================================
+// ======================================= 企业微信应用消息通知设置区域 ===========================================
 /*
- 此处填你企业微信应用消息的值(详见文档 https://work.weixin.qq.com/api/doc/90000/90135/90236)
- 环境变量名 QYWX_AM依次填入 corpid,corpsecret,touser(注:多个成员ID使用|隔开),agentid,消息类型(选填,不填默认文本消息类型)
- 注意用,号隔开(英文输入法的逗号)，例如：wwcff56746d9adwers,B-791548lnzXBE6_BWfxdf3kSTMJr9vFEPKAbh6WERQ,mingcheng,1000001,2COXgjH2UIfERF2zxrtUOKgQ9XklUqMdGSWLBoW_lSDAdafat
- 可选推送消息类型(推荐使用图文消息（mpnews）):
+ 此处填你企业微信应用消息的值 (详见文档 https://work.weixin.qq.com/api/doc/90000/90135/90236)
+ 环境变量名 QYWX_AM 依次填入 corpid,corpsecret,touser(注: 多个成员 ID 使用 | 隔开),agentid, 消息类型 (选填, 不填默认文本消息类型)
+ 注意用, 号隔开 (英文输入法的逗号), 例如：wwcff56746d9adwers,B-791548lnzXBE6_BWfxdf3kSTMJr9vFEPKAbh6WERQ,mingcheng,1000001,2COXgjH2UIfERF2zxrtUOKgQ9XklUqMdGSWLBoW_lSDAdafat
+ 可选推送消息类型 (推荐使用图文消息（mpnews）):
  - 文本卡片消息: 0 (数字零)
  - 文本消息: 1 (数字一)
- - 图文消息（mpnews）: 素材库图片id, 可查看此教程(http://note.youdao.com/s/HMiudGkb)或者(https://note.youdao.com/ynoteshare1/index.html?id=1a0c8aff284ad28cbd011b29b3ad0191&type=note)
+ - 图文消息（mpnews）: 素材库图片 id, 可查看此教程 (http://note.youdao.com/s/HMiudGkb) 或者 (https://note.youdao.com/ynoteshare1/index.html?id=1a0c8aff284ad28cbd011b29b3ad0191&type=note)
  */
 let QYWX_AM = "";
 
-// =======================================iGot聚合推送通知设置区域===========================================
-//此处填您iGot的信息(推送key，例如：https://push.hellyw.com/XXXXXXXX)
+// =======================================iGot 聚合推送通知设置区域 ===========================================
+// 此处填您 iGot 的信息 (推送 key, 例如：https://push.hellyw.com/XXXXXXXX)
 let IGOT_PUSH_KEY = "";
 
-// =======================================push+设置区域=======================================
-//官方文档：http://www.pushplus.plus/
-//PUSH_PLUS_TOKEN：微信扫码登录后一对一推送或一对多推送下面的token(您的Token)，不提供PUSH_PLUS_USER则默认为一对一推送
-//PUSH_PLUS_USER： 一对多推送的“群组编码”（一对多推送下面->您的群组(如无则新建)->群组编码，如果您是创建群组人。也需点击“查看二维码”扫描绑定，否则不能接受群组消息推送）
+// =======================================push + 设置区域 =======================================
+// 官方文档：http://www.pushplus.plus/
+//PUSH_PLUS_TOKEN：微信扫码登录后一对一推送或一对多推送下面的 token(您的 Token), 不提供 PUSH_PLUS_USER 则默认为一对一推送
+//PUSH_PLUS_USER： 一对多推送的 “群组编码”（一对多推送下面 -> 您的群组 (如无则新建)-> 群组编码, 如果您是创建群组人。也需点击 “查看二维码” 扫描绑定, 否则不能接受群组消息推送）
 let PUSH_PLUS_TOKEN = "";
 let PUSH_PLUS_USER = "";
 
-// =======================================QMSG酱通知设置区域===========================================
-//此处填你申请的QMSG_KEY. 官方文档：https://qmsg.zendee.cn/
-// QMSG_KEY 可在管理台查看: https://qmsg.zendee.cn/me.html
-// QMSG_MODE  send 私聊消息推送, group 群消息推送
-let QMSG_KEY = "";
-let QMSG_MODE = "";
-
-// =======================================cq-gohttp设置区域=======================================
+// =======================================cq-gohttp 设置区域 =======================================
 // Doc https://docs.go-cqhttp.org/api/
 let go_cqhttp_url = ""; // 127.0.0.1:5702
-let go_cqhttp_qq = ""; // 接收消息QQ或群
+let go_cqhttp_qq = ""; // 接收消息 QQ 或群
 let go_cqhttp_method = ""; // send_private_msg or send_group_msg
 
 process.env.go_cqhttp_url ? (go_cqhttp_url = process.env.go_cqhttp_url) : "";
@@ -94,7 +87,25 @@ process.env.go_cqhttp_method ?
     (go_cqhttp_method = process.env.go_cqhttp_method) :
     "";
 
-//==========================云端环境变量的判断与接收=========================
+// =======================================QMSG 酱通知设置区域 ===========================================
+// 此处填你申请的 QMSG_KEY. 官方文档：https://qmsg.zendee.cn/
+// QMSG_KEY 可在管理台查看: https://qmsg.zendee.cn/me.html
+// QMSG_MODE  send 私聊消息推送, group 群消息推送
+let QMSG_KEY = "";
+let QMSG_MODE = "";
+
+// ======================================= WxPusher 通知设置区域 ===========================================
+// 此处填你申请的 appToken. 官方文档：https://wxpusher.zjiecode.com/docs
+// WP_APP_TOKEN 可在管理台查看: https://wxpusher.zjiecode.com/admin/main/app/appToken
+// WP_TOPICIDS 群发, 发送目标的 topicId, 是一个数组! 使用 WP_UIDS 单发的时候, 可以不传
+// WP_UIDS 发送目标的 UID, 是一个数组。注意 WP_UIDS 和 WP_TOPICIDS 可以同时填写, 也可以只填写一个。
+// WP_URL 原文链接, 可选参数
+let WP_APP_TOKEN = "";
+let WP_TOPICIDS = "";
+let WP_UIDS = "";
+let WP_URL = "";
+
+//========================== 云端环境变量的判断与接收 =========================
 if (process.env.PUSH_KEY) {
     SCKEY = process.env.PUSH_KEY;
 }
@@ -107,20 +118,12 @@ if (process.env.PUSH_KEY_WECOM_URL) {
     SCKEY_WECOM_URL = process.env.PUSH_KEY_WECOM_URL;
 }
 
-if (process.env.QMSG_KEY) {
-    QMSG_KEY = process.env.QMSG_KEY;
-}
-
-if (process.env.QMSG_MODE) {
-    QMSG_MODE = process.env.QMSG_MODE;
-}
-
 if (process.env.BARK_PUSH) {
     if (
         process.env.BARK_PUSH.indexOf("https") > -1 ||
         process.env.BARK_PUSH.indexOf("http") > -1
     ) {
-        //兼容BARK自建用户
+        // 兼容 BARK 自建用户
         BARK_PUSH = process.env.BARK_PUSH;
     } else {
         BARK_PUSH = `https://api.day.app/${process.env.BARK_PUSH}`;
@@ -137,7 +140,7 @@ if (process.env.BARK_PUSH) {
         BARK_PUSH.indexOf("https") === -1 &&
         BARK_PUSH.indexOf("http") === -1
     ) {
-        //兼容BARK本地用户只填写设备码的情况
+        // 兼容 BARK 本地用户只填写设备码的情况
         BARK_PUSH = `https://api.day.app/${BARK_PUSH}`;
     }
 }
@@ -178,24 +181,48 @@ if (process.env.PUSH_PLUS_USER) {
     PUSH_PLUS_USER = process.env.PUSH_PLUS_USER;
 }
 
-//==========================云端环境变量的判断与接收=========================
+if (process.env.QMSG_KEY) {
+    QMSG_KEY = process.env.QMSG_KEY;
+}
+
+if (process.env.QMSG_MODE) {
+    QMSG_MODE = process.env.QMSG_MODE;
+}
+
+if (process.env.WP_APP_TOKEN) {
+    WP_APP_TOKEN = process.env.WP_APP_TOKEN;
+}
+
+if (process.env.WP_TOPICIDS) {
+    WP_TOPICIDS = process.env.WP_TOPICIDS;
+}
+
+if (process.env.WP_UIDS) {
+    WP_UIDS = process.env.WP_UIDS;
+}
+
+if (process.env.WP_URL) {
+    WP_URL = process.env.WP_URL;
+}
+
+//========================== 云端环境变量的判断与接收 =========================
 
 /**
  * sendNotify 推送通知功能
  * @param text 通知头
  * @param desp 通知体
- * @param params 某些推送通知方式点击弹窗可跳转, 例：{ url: 'https://abc.com' }
- * @param author 作者仓库等信息  例：`本脚本免费使用 By：xxxx`
+ * @param params 某些推送通知方式点击弹窗可跳转, 例：{url: 'https://abc.com'}
+ * @param author 作者仓库等信息  例：` 本脚本免费使用 By：xxxx`
  * @returns {Promise<unknown>}
  */
 async function sendNotify(
     text,
     desp,
     params = {},
-    author = "\n\n仅供用于学习"
+    author = "\n\n 本通知 By： https://github.com/JaimeZeng/MyActions"
 ) {
-    //提供6种通知
-    desp += author; //增加作者信息，防止被贩卖等
+    // 提供 6 种通知
+    desp += author; // 增加作者信息, 防止被贩卖等
     let remarks = "";
     try {
         fs.accessSync("./tools/account.json");
@@ -216,27 +243,28 @@ async function sendNotify(
         }
     }
     await Promise.all([
-        serverNotify(text, desp), //微信server酱
-        serverWecomNotify(text, desp), // 自建server酱推送
+        serverNotify(text, desp), // 微信 server 酱
+        serverWecomNotify(text, desp), // 自建 server 酱推送
         pushPlusNotify(text, desp), //pushplus(推送加)
     ]);
-    //由于上述两种微信通知需点击进去才能查看到详情，故text(标题内容)携带了账号序号以及昵称信息，方便不点击也可知道是哪个京东哪个活动
+    // 由于上述两种微信通知需点击进去才能查看到详情, 故 text(标题内容) 携带了账号序号以及昵称信息, 方便不点击也可知道是哪个京东哪个活动
     text = text.match(/.*?(?=\s?-)/g) ? text.match(/.*?(?=\s?-)/g)[0] : text;
     await Promise.all([
         BarkNotify(text, desp, params), //iOS Bark APP
         tgBotNotify(text, desp), //telegram 机器人
-        ddBotNotify(text, desp), //钉钉机器人
-        qywxBotNotify(text, desp), //企业微信机器人
-        qywxamNotify(text, desp), //企业微信应用消息推送
+        ddBotNotify(text, desp), // 钉钉机器人
+        qywxBotNotify(text, desp), // 企业微信机器人
+        qywxamNotify(text, desp), // 企业微信应用消息推送
         iGotNotify(text, desp, params), //iGot
         goCQhttp(text, desp), // go-cqhttp
         qmsgNotify(text, desp), // qmsg
+        wxpusherNotify(text, desp), // wxpusher
     ]);
 }
 
 function goCQhttp(text, desp) {
     if (go_cqhttp_url && go_cqhttp_qq && go_cqhttp_method) {
-        let msg = (text + "\n" + desp).replace("\n\n仅供用于学习", "");
+        let msg = (text + "\n" + desp).replace("\n\n 仅供用于学习", "");
 
         let recv_id = "";
         if (go_cqhttp_method === "send_private_msg") {
@@ -257,10 +285,10 @@ function goCQhttp(text, desp) {
                             // console.log(data);
                             data = JSON.parse(data);
                             if (data.retcode === 0 && data.status === "ok") {
-                                console.log("go-cqhttp发送通知消息成功🎉\n");
+                                console.log("go-cqhttp 发送通知消息成功🎉\n");
                             } else {
                                 console.log(
-                                    `go-cqhttp发送通知消息异常\n${JSON.stringify(data)}`
+                                    `go-cqhttp 发送通知消息异常 \ n${JSON.stringify(data)}`
                                 );
                             }
                         } catch (e) {
@@ -278,7 +306,7 @@ function goCQhttp(text, desp) {
 function serverNotify(text, desp, time = 2100) {
     return new Promise((resolve) => {
         if (SCKEY) {
-            //微信server酱推送通知一个\n不会换行，需要两个\n才能换行，故做此替换
+            // 微信 server 酱推送通知一个 \ n 不会换行, 需要两个 \ n 才能换行, 故做此替换
             desp = desp.replace(/[\n\r]/g, "\n\n");
             const options = {
                 url: SCKEY.includes("SCT") ?
@@ -293,19 +321,19 @@ function serverNotify(text, desp, time = 2100) {
                 $.post(options, (err, resp, data) => {
                     try {
                         if (err) {
-                            console.log("发送通知调用API失败！！\n");
+                            console.log("发送通知调用 API 失败！！\n");
                             console.log(err);
                         } else {
                             data = JSON.parse(data);
-                            //server酱和Server酱·Turbo版的返回json格式不太一样
+                            //server 酱和 Server 酱 ·Turbo 版的返回 json 格式不太一样
                             if (data.errno === 0 || data.data.errno === 0) {
-                                console.log("server酱发送通知消息成功🎉\n");
+                                console.log("server 酱发送通知消息成功🎉\n");
                             } else if (data.errno === 1024) {
                                 // 一分钟内发送相同的内容会触发
-                                console.log(`server酱发送通知消息异常: ${data.errmsg}\n`);
+                                console.log(`server 酱发送通知消息异常: ${data.errmsg}\n`);
                             } else {
                                 console.log(
-                                    `server酱发送通知消息异常\n${JSON.stringify(data)}`
+                                    `server 酱发送通知消息异常 \ n${JSON.stringify(data)}`
                                 );
                             }
                         }
@@ -317,7 +345,7 @@ function serverNotify(text, desp, time = 2100) {
                 });
             }, time);
         } else {
-            console.log("\n\n您未提供server酱的SCKEY，取消微信推送消息通知🚫\n");
+            console.log("\n\n 您未提供 server 酱的 SCKEY, 取消微信推送消息通知🚫\n");
             resolve();
         }
     });
@@ -326,7 +354,7 @@ function serverNotify(text, desp, time = 2100) {
 function serverWecomNotify(text, desp, time = 2100) {
     return new Promise((resolve) => {
         if (SCKEY_WECOM && SCKEY_WECOM_URL) {
-            //微信server酱推送通知一个\n不会换行，需要两个\n才能换行，故做此替换
+            // 微信 server 酱推送通知一个 \ n 不会换行, 需要两个 \ n 才能换行, 故做此替换
             desp = desp.replace(/[\n\r]/g, "\n\n");
             const options = {
                 url: SCKEY_WECOM_URL,
@@ -340,19 +368,19 @@ function serverWecomNotify(text, desp, time = 2100) {
                 $.post(options, (err, resp, data) => {
                     try {
                         if (err) {
-                            console.log("发送通知调用API失败！！\n");
+                            console.log("发送通知调用 API 失败！！\n");
                             console.log(err);
                         } else {
                             data = JSON.parse(data);
-                            //server酱和Server酱·Turbo版的返回json格式不太一样
+                            //server 酱和 Server 酱 ·Turbo 版的返回 json 格式不太一样
                             if (data.errno === 0 || data.data.errno === 0) {
-                                console.log("server酱发送通知消息成功🎉\n");
+                                console.log("server 酱发送通知消息成功🎉\n");
                             } else if (data.errno === 1024) {
                                 // 一分钟内发送相同的内容会触发
-                                console.log(`server酱发送通知消息异常: ${data.errmsg}\n`);
+                                console.log(`server 酱发送通知消息异常: ${data.errmsg}\n`);
                             } else {
                                 console.log(
-                                    `server酱发送通知消息异常\n${JSON.stringify(data)}`
+                                    `server 酱发送通知消息异常 \ n${JSON.stringify(data)}`
                                 );
                             }
                         }
@@ -365,7 +393,7 @@ function serverWecomNotify(text, desp, time = 2100) {
             }, time);
         } else {
             console.log(
-                "\n\n您未提供自建server酱的SCKEY，取消推送自建server酱消息通知🚫\n"
+                "\n\n 您未提供自建 server 酱的 SCKEY, 取消推送自建 server 酱消息通知🚫\n"
             );
             resolve();
         }
@@ -389,12 +417,12 @@ function BarkNotify(text, desp, params = {}) {
             $.get(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log("Bark APP发送通知调用API失败！！\n");
+                        console.log("Bark APP 发送通知调用 API 失败！！\n");
                         console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.code === 200) {
-                            console.log("Bark APP发送通知消息成功🎉\n");
+                            console.log("Bark APP 发送通知消息成功🎉\n");
                         } else {
                             console.log(`${data.message}\n`);
                         }
@@ -406,44 +434,7 @@ function BarkNotify(text, desp, params = {}) {
                 }
             });
         } else {
-            console.log("您未提供Bark的APP推送BARK_PUSH，取消Bark推送消息通知🚫\n");
-            resolve();
-        }
-    });
-}
-
-function qmsgNotify(text, desp, time = 2100) {
-    return new Promise((resolve) => {
-        if (QMSG_KEY) {
-            const options = {
-                url: `https://qmsg.zendee.cn/${QMSG_MODE}/${QMSG_KEY}`,
-                body: `msg=${text}\n\n${desp}`,
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                timeout,
-            };
-            setTimeout(() => {
-                $.post(options, (err, resp, data) => {
-                    try {
-                        if (err) {
-                            console.log("qmsg发送通知调用API失败！！\n");
-                            console.log(err);
-                        } else {
-                            data = JSON.parse(data);
-                            if (data.code === 0) {
-                                console.log("Qmsg酱发送通知消息成功\n");
-                            }
-                        }
-                    } catch (e) {
-                        $.logErr(e, resp);
-                    } finally {
-                        resolve(data);
-                    }
-                });
-            }, time);
-        } else {
-            console.log("\n\n您未提供Qmsg酱的KEY\n");
+            console.log("您未提供 Bark 的 APP 推送 BARK_PUSH, 取消 Bark 推送消息通知🚫\n");
             resolve();
         }
     });
@@ -471,20 +462,20 @@ function tgBotNotify(text, desp) {
                         },
                     }),
                 };
-                Object.assign(options, { agent });
+                Object.assign(options, { agent});
             }
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log("telegram发送通知消息失败！！\n");
+                        console.log("telegram 发送通知消息失败！！\n");
                         console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.ok) {
-                            console.log("Telegram发送通知消息成功🎉。\n");
+                            console.log("Telegram 发送通知消息成功🎉。\n");
                         } else if (data.error_code === 400) {
                             console.log(
-                                "请主动给bot发送一条消息并检查接收用户ID是否正确。\n"
+                                "请主动给 bot 发送一条消息并检查接收用户 ID 是否正确。\n"
                             );
                         } else if (data.error_code === 401) {
                             console.log("Telegram bot token 填写错误。\n");
@@ -498,7 +489,7 @@ function tgBotNotify(text, desp) {
             });
         } else {
             console.log(
-                "您未提供telegram机器人推送所需的TG_BOT_TOKEN和TG_USER_ID，取消telegram推送消息通知🚫\n"
+                "您未提供 telegram 机器人推送所需的 TG_BOT_TOKEN 和 TG_USER_ID, 取消 telegram 推送消息通知🚫\n"
             );
             resolve();
         }
@@ -568,7 +559,7 @@ function ddBotNotify(text, desp) {
             });
         } else {
             console.log(
-                "您未提供钉钉机器人推送所需的DD_BOT_TOKEN或者DD_BOT_SECRET，取消钉钉推送消息通知🚫\n"
+                "您未提供钉钉机器人推送所需的 DD_BOT_TOKEN 或者 DD_BOT_SECRET, 取消钉钉推送消息通知🚫\n"
             );
             resolve();
         }
@@ -612,7 +603,7 @@ function qywxBotNotify(text, desp) {
             });
         } else {
             console.log(
-                "您未提供企业微信机器人推送所需的QYWX_KEY，取消企业微信推送消息通知🚫\n"
+                "您未提供企业微信机器人推送所需的 QYWX_KEY, 取消企业微信推送消息通知🚫\n"
             );
             resolve();
         }
@@ -626,7 +617,7 @@ function ChangeUserId(desp) {
         let userId = "";
         for (let i = 0; i < userIdTmp.length; i++) {
             const count = "账号" + (i + 1);
-            const count2 = "签到号 " + (i + 1);
+            const count2 = "签到号" + (i + 1);
             if (desp.match(count2)) {
                 userId = userIdTmp[i];
             }
@@ -688,7 +679,7 @@ function qywxamNotify(text, desp) {
                                 articles: [{
                                     title: `${text}`,
                                     thumb_media_id: `${QYWX_AM_AY[4]}`,
-                                    author: `智能助手`,
+                                    author: ` 智能助手 `,
                                     content_source_url: ``,
                                     content: `${html}`,
                                     digest: `${desp}`,
@@ -697,7 +688,7 @@ function qywxamNotify(text, desp) {
                         };
                 }
                 if (!QYWX_AM_AY[4]) {
-                    //如不提供第四个参数,则默认进行文本消息类型推送
+                    // 如不提供第四个参数, 则默认进行文本消息类型推送
                     options = {
                         msgtype: "text",
                         text: {
@@ -722,7 +713,7 @@ function qywxamNotify(text, desp) {
                     try {
                         if (err) {
                             console.log(
-                                "成员ID:" +
+                                "成员 ID:" +
                                 ChangeUserId(desp) +
                                 "企业微信应用消息发送通知消息失败！！\n"
                             );
@@ -731,7 +722,7 @@ function qywxamNotify(text, desp) {
                             data = JSON.parse(data);
                             if (data.errcode === 0) {
                                 console.log(
-                                    "成员ID:" +
+                                    "成员 ID:" +
                                     ChangeUserId(desp) +
                                     "企业微信应用消息发送通知消息成功🎉。\n"
                                 );
@@ -748,7 +739,7 @@ function qywxamNotify(text, desp) {
             });
         } else {
             console.log(
-                "您未提供企业微信应用消息推送所需的QYWX_AM，取消企业微信应用消息推送消息通知🚫\n"
+                "您未提供企业微信应用消息推送所需的 QYWX_AM, 取消企业微信应用消息推送消息通知🚫\n"
             );
             resolve();
         }
@@ -758,10 +749,10 @@ function qywxamNotify(text, desp) {
 function iGotNotify(text, desp, params = {}) {
     return new Promise((resolve) => {
         if (IGOT_PUSH_KEY) {
-            // 校验传入的IGOT_PUSH_KEY是否有效
+            // 校验传入的 IGOT_PUSH_KEY 是否有效
             const IGOT_PUSH_KEY_REGX = new RegExp("^[a-zA-Z0-9]{24}$");
             if (!IGOT_PUSH_KEY_REGX.test(IGOT_PUSH_KEY)) {
-                console.log("您所提供的IGOT_PUSH_KEY无效\n");
+                console.log("您所提供的 IGOT_PUSH_KEY 无效 \ n");
                 resolve();
                 return;
             }
@@ -776,14 +767,14 @@ function iGotNotify(text, desp, params = {}) {
             $.post(options, (err, resp, data) => {
                 try {
                     if (err) {
-                        console.log("发送通知调用API失败！！\n");
+                        console.log("发送通知调用 API 失败！！\n");
                         console.log(err);
                     } else {
                         if (typeof data === "string") data = JSON.parse(data);
                         if (data.ret === 0) {
-                            console.log("iGot发送通知消息成功🎉\n");
+                            console.log("iGot 发送通知消息成功🎉\n");
                         } else {
-                            console.log(`iGot发送通知消息失败：${data.errMsg}\n`);
+                            console.log(`iGot 发送通知消息失败：${data.errMsg}\n`);
                         }
                     }
                 } catch (e) {
@@ -793,7 +784,7 @@ function iGotNotify(text, desp, params = {}) {
                 }
             });
         } else {
-            console.log("您未提供iGot的推送IGOT_PUSH_KEY，取消iGot推送消息通知🚫\n");
+            console.log("您未提供 iGot 的推送 IGOT_PUSH_KEY, 取消 iGot 推送消息通知🚫\n");
             resolve();
         }
     });
@@ -802,7 +793,7 @@ function iGotNotify(text, desp, params = {}) {
 function pushPlusNotify(text, desp) {
     return new Promise((resolve) => {
         if (PUSH_PLUS_TOKEN) {
-            desp = desp.replace(/[\n\r]/g, "<br>"); // 默认为html, 不支持plaintext
+            desp = desp.replace(/[\n\r]/g, "<br>"); // 默认为 html, 不支持 plaintext
             const body = {
                 token: `${PUSH_PLUS_TOKEN}`,
                 title: `${text}`,
@@ -813,7 +804,7 @@ function pushPlusNotify(text, desp) {
                 url: `http://www.pushplus.plus/send`,
                 body: JSON.stringify(body),
                 headers: {
-                    "Content-Type": " application/json",
+                    "Content-Type": "application/json",
                 },
                 timeout,
             };
@@ -821,21 +812,21 @@ function pushPlusNotify(text, desp) {
                 try {
                     if (err) {
                         console.log(
-                            `push+发送${PUSH_PLUS_USER ? "一对多" : "一对一"
-              }通知消息失败！！\n`
+                            `push + 发送 ${PUSH_PLUS_USER ? "一对多" : "一对一"
+              } 通知消息失败！！\n`
                         );
                         console.log(err);
                     } else {
                         data = JSON.parse(data);
                         if (data.code === 200) {
                             console.log(
-                                `push+发送${PUSH_PLUS_USER ? "一对多" : "一对一"
-                }通知消息完成。\n`
+                                `push + 发送 ${PUSH_PLUS_USER ? "一对多" : "一对一"
+                } 通知消息完成。\n`
                             );
                         } else {
                             console.log(
-                                `push+发送${PUSH_PLUS_USER ? "一对多" : "一对一"
-                }通知消息失败：${data.msg}\n`
+                                `push + 发送 ${PUSH_PLUS_USER ? "一对多" : "一对一"
+                } 通知消息失败：${data.msg}\n`
                             );
                         }
                     }
@@ -847,8 +838,72 @@ function pushPlusNotify(text, desp) {
             });
         } else {
             console.log(
-                "您未提供push+推送所需的PUSH_PLUS_TOKEN，取消push+推送消息通知🚫\n"
+                "您未提供 push + 推送所需的 PUSH_PLUS_TOKEN, 取消 push + 推送消息通知🚫\n"
             );
+            resolve();
+        }
+    });
+}
+
+function qmsgNotify(text, desp, time = 2100) {
+    return new Promise((resolve) => {
+        if (QMSG_KEY) {
+            const options = {
+                url: `https://qmsg.zendee.cn/${QMSG_MODE}/${QMSG_KEY}`,
+                body: `msg=${text}\n\n${desp}`,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                timeout,
+            };
+            setTimeout(() => {
+                $.post(options, (err, resp, data) => {
+                    try {
+                        if (err) {
+                            console.log("qmsg 发送通知调用 API 失败！！\n");
+                            console.log(err);
+                        } else {
+                            data = JSON.parse(data);
+                            if (data.code === 0) {
+                                console.log("Qmsg 酱发送通知消息成功 \ n");
+                            }
+                        }
+                    } catch (e) {
+                        $.logErr(e, resp);
+                    } finally {
+                        resolve(data);
+                    }
+                });
+            }, time);
+        } else {
+            console.log("\n\n 您未提供 Qmsg 酱的 KEY\n");
+            resolve();
+        }
+    });
+}
+
+function wxpusherNotify(text, desp) {
+    return new Promise((resolve) => {
+        if (WP_APP_TOKEN) {
+            const body = {
+                appToken: `${WP_APP_TOKEN}`,
+                content: `${text}\n\n${desp}`,
+                summary: '',
+                contentType: 1,
+                topicIds: `${WP_TOPICIDS}`,
+                uids: `${WP_UIDS}`,
+                url: `${WP_URL}`,
+            };
+            const options = {
+                url: `http://wxpusher.zjiecode.com/api/send/message`,
+                body: JSON.stringify(body),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                timeout,
+            };
+        } else {
+            console.log("\n\n 您未提供 WxPusher 的 appToken\n");
             resolve();
         }
     });
@@ -869,7 +924,7 @@ function Env(t, e) {
         }
 
         send(t, e = "GET") {
-            t = "string" == typeof t ? { url: t } : t;
+            t = "string" == typeof t ? {url: t} : t;
             let s = this.get;
             return "POST" === e && (s = this.post), new Promise((e, i) => {
                 s.call(this, t, (t, s, r) => {
@@ -943,7 +998,7 @@ function Env(t, e) {
 
         getScript(t) {
             return new Promise(e => {
-                this.get({ url: t }, (t, s, i) => e(i))
+                this.get({url: t}, (t, s, i) => e(i))
             })
         }
 
@@ -955,8 +1010,8 @@ function Env(t, e) {
                 r = r ? 1 * r : 20, r = e && e.timeout ? e.timeout : r;
                 const [o, h] = i.split("@"), n = {
                     url: `http://${h}/v1/scripting/evaluate`,
-                    body: { script_text: t, mock_type: "cron", timeout: r },
-                    headers: { "X-Key": o, Accept: "*/*" }
+                    body: {script_text: t, mock_type: "cron", timeout: r},
+                    headers: {"X-Key": o, Accept: "*/*"}
                 };
                 this.post(n, (t, e, i) => s(i))
             }).catch(t => this.logErr(t))
@@ -1049,8 +1104,8 @@ function Env(t, e) {
             t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.get(t, (t, s, i) => {
                 !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
             })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, { hints: !1 })), $task.fetch(t).then(t => {
-                const { statusCode: s, statusCode: i, headers: r, body: o } = t;
-                e(null, { status: s, statusCode: i, headers: r, body: o }, o)
+                const {statusCode: s, statusCode: i, headers: r, body: o} = t;
+                e(null, { status: s, statusCode: i, headers: r, body: o}, o)
             }, t => e(t))) : this.isNode() && (this.initGotEnv(t), this.got(t).on("redirect", (t, e) => {
                 try {
                     if (t.headers["set-cookie"]) {
@@ -1061,10 +1116,10 @@ function Env(t, e) {
                     this.logErr(t)
                 }
             }).then(t => {
-                const { statusCode: s, statusCode: i, headers: r, body: o } = t;
-                e(null, { status: s, statusCode: i, headers: r, body: o }, o)
+                const {statusCode: s, statusCode: i, headers: r, body: o} = t;
+                e(null, { status: s, statusCode: i, headers: r, body: o}, o)
             }, t => {
-                const { message: s, response: i } = t;
+                const {message: s, response: i} = t;
                 e(s, i, i && i.body)
             }))
         }
@@ -1074,17 +1129,17 @@ function Env(t, e) {
                 !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
             });
             else if (this.isQuanX()) t.method = "POST", this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, { hints: !1 })), $task.fetch(t).then(t => {
-                const { statusCode: s, statusCode: i, headers: r, body: o } = t;
-                e(null, { status: s, statusCode: i, headers: r, body: o }, o)
+                const {statusCode: s, statusCode: i, headers: r, body: o} = t;
+                e(null, { status: s, statusCode: i, headers: r, body: o}, o)
             }, t => e(t));
             else if (this.isNode()) {
                 this.initGotEnv(t);
-                const { url: s, ...i } = t;
+                const {url: s, ...i} = t;
                 this.got.post(s, i).then(t => {
-                    const { statusCode: s, statusCode: i, headers: r, body: o } = t;
-                    e(null, { status: s, statusCode: i, headers: r, body: o }, o)
+                    const {statusCode: s, statusCode: i, headers: r, body: o} = t;
+                    e(null, { status: s, statusCode: i, headers: r, body: o}, o)
                 }, t => {
-                    const { message: s, response: i } = t;
+                    const {message: s, response: i} = t;
                     e(s, i, i && i.body)
                 })
             }
@@ -1106,7 +1161,7 @@ function Env(t, e) {
             return t
         }
 
-        msg(e = t, s = "", i = "", r) {
+        msg(e = t, s = "", i ="", r) {
             const o = t => {
                 if (!t) return t;
                 if ("string" == typeof t) return this.isLoon() ? t : this.isQuanX() ? { "open-url": t } : this.isSurge() ? { url: t } : void 0;
@@ -1114,21 +1169,21 @@ function Env(t, e) {
                     if (this.isLoon()) {
                         let e = t.openUrl || t.url || t["open-url"],
                             s = t.mediaUrl || t["media-url"];
-                        return { openUrl: e, mediaUrl: s }
+                        return {openUrl: e, mediaUrl: s}
                     }
                     if (this.isQuanX()) {
                         let e = t["open-url"] || t.url || t.openUrl,
                             s = t["media-url"] || t.mediaUrl;
-                        return { "open-url": e, "media-url": s }
+                        return {"open-url": e, "media-url": s}
                     }
                     if (this.isSurge()) {
                         let e = t.url || t.openUrl || t["open-url"];
-                        return { url: e }
+                        return {url: e}
                     }
                 }
             };
             if (this.isMute || (this.isSurge() || this.isLoon() ? $notification.post(e, s, i, o(r)) : this.isQuanX() && $notify(e, s, i, o(r))), !this.isMuteLog) {
-                let t = ["", "==============📣系统通知📣=============="];
+                let t = ["","==============📣系统通知📣=============="];
                 t.push(e), s && t.push(s), i && t.push(i), console.log(t.join("\n")), this.logs = this.logs.concat(t)
             }
         }
@@ -1149,7 +1204,7 @@ function Env(t, e) {
         done(t = {}) {
             const e = (new Date).getTime(),
                 s = (e - this.startTime) / 1e3;
-            this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒`), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
+            this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒 `), this.log(), (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
         }
     }(t, e)
 }
