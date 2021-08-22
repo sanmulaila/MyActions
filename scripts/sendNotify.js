@@ -876,7 +876,7 @@ function qmsgNotify(text, desp, time = 2100) {
                 });
             }, time);
         } else {
-            console.log("\n\n 您未提供 Qmsg 酱的 KEY\n");
+            console.log("\n\n 您未提供 Qmsg 酱的 KEY, 取消 Qmsg 推送消息通知🚫\n");
             resolve();
         }
     });
@@ -903,7 +903,7 @@ function wxpusherNotify(text, desp) {
                 timeout,
             };
         } else {
-            console.log("\n\n 您未提供 WxPusher 的 appToken\n");
+            console.log("\n\n 您未提供 WxPusher 的 appToken, 取消 WxPusher 推送消息通知🚫\n");
             resolve();
         }
     });
