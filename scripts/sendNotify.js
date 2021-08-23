@@ -891,8 +891,8 @@ function wxpusherNotify(text, desp) {
                 content: `${text}\n\n${desp}`,
                 summary: `${text}`,
                 contentType: 3,
-                topicIds: `${WP_TOPICIDS}`,
-                uids: `${WP_UIDS}`,
+                topicIds: `[${WP_TOPICIDS}]`,
+                uids: `[${WP_UIDS}]`,
                 url: `${WP_URL}`,
             };
             const options = {

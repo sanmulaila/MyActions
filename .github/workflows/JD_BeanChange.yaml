@@ -36,5 +36,5 @@ jobs:
           PUSH_PLUS_TOKEN: 4c44f4eab11c433ea05d36784c4ee4b8
           PUSH_PLUS_USER: 1
           WP_APP_TOKEN: ${{ secrets.WP_APP_TOKEN }}
-          WP_TOPICIDS: [2897]
-          WP_UIDS: [UID_0BfEFC10e0nnGXiIMTSWrMlpkuxK]
+          WP_TOPICIDS: 2897
+          WP_UIDS: UID_0BfEFC10e0nnGXiIMTSWrMlpkuxK
