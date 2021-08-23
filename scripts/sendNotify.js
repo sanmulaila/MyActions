@@ -885,23 +885,39 @@ function qmsgNotify(text, desp, time = 2100) {
 function wxpusherNotify(text, desp) {
     return new Promise((resolve) => {
         if (WP_APP_TOKEN) {
-            const body = {
-                appToken: `${WP_APP_TOKEN}`,
-                content: `${text}\n\n${desp}`,
-                summary: '',
-                contentType: 1,
-                topicIds: `${WP_TOPICIDS}`,
-                uids: `${WP_UIDS}`,
-                url: `${WP_URL}`,
-            };
             const options = {
                 url: `http://wxpusher.zjiecode.com/api/send/message`,
-                body: JSON.stringify(body),
+                body: JSON.stringify({
+                    appToken: `${WP_APP_TOKEN}`,
+                    content: `${text}\n\n${desp}`,
+                    summary: `${text}`,
+                    contentType: 3,
+                    topicIds: `${WP_TOPICIDS}`,
+                    uids: `${WP_UIDS}`,
+                    url: `${WP_URL}`,
+                }),
                 headers: {
                     "Content-Type": "application/json",
                 },
                 timeout,
             };
+            $.post(options, (err, resp, data) => {
+                try {
+                    if (err) {
+                        console.log("WxPusher 发送通知调用 API 失败！！\n");
+                        console.log(err);
+                    } else {
+                        data = JSON.parse(data);
+                        if (data.code === 0) {
+                            console.log("WxPusher 发送通知消息成功🚫\n");
+                        }
+                    }
+                } catch (e) {
+                    $.logErr(e, resp);
+                } finally {
+                    resolve(data);
+                }
+            });
         } else {
             console.log("\n\n 您未提供 WxPusher 的 appToken, 取消 WxPusher 推送消息通知🚫\n");
             resolve();
