@@ -393,7 +393,7 @@ function serverWecomNotify(text, desp, time = 2100) {
             }, time);
         } else {
             console.log(
-                "\n您未提供自建 server 酱的 SCKEY, 取消推送自建 server 酱消息通知🚫\n"
+                "您未提供自建 server 酱的 SCKEY, 取消推送自建 server 酱消息通知🚫\n"
             );
             resolve();
         }
@@ -883,19 +883,21 @@ function qmsgNotify(text, desp, time = 2100) {
 }
 
 function wxpusherNotify(text, desp) {
+    console.log("WxPusher 发送通知消息\n");
     return new Promise((resolve) => {
         if (WP_APP_TOKEN) {
+            const body = {
+                appToken: `${WP_APP_TOKEN}`,
+                content: `${text}\n\n${desp}`,
+                summary: `${text}`,
+                contentType: 3,
+                topicIds: `${WP_TOPICIDS}`,
+                uids: `${WP_UIDS}`,
+                url: `${WP_URL}`,
+            };
             const options = {
                 url: `http://wxpusher.zjiecode.com/api/send/message`,
-                body: JSON.stringify({
-                    appToken: `${WP_APP_TOKEN}`,
-                    content: `${text}\n\n${desp}`,
-                    summary: `${text}`,
-                    contentType: 3,
-                    topicIds: `${WP_TOPICIDS}`,
-                    uids: `${WP_UIDS}`,
-                    url: `${WP_URL}`,
-                }),
+                body: JSON.stringify(body),
                 headers: {
                     "Content-Type": "application/json",
                 },
