@@ -1,0 +1,39 @@
+name: JD_CCSign
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 16 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ["10"]
+    steps:
+      - name: Checkout Codes
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install Dependencies And Run
+        run: |
+          cd scripts/
+          npm install
+          node jd_ccSign.js
+        env:
+          TZ: Asia/Shanghai
+          QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
+          QMSG_MODE: group
+          JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
+          TG_BOT_TOKEN: 1949709459:AAGP8xZlLtJCd_coJ8l_o4PF0OVxX1imfQw
+          TG_USER_ID: 799728773
+          PUSH_PLUS_TOKEN: 4c44f4eab11c433ea05d36784c4ee4b8
+          PUSH_PLUS_USER: 1
+          WP_APP_TOKEN: AT_Zo4zOVmpNRriI4la6Iq4DIlaDSqkQDVb
+          WP_TOPICIDS: 2897
+          WP_UIDS: UID_0BfEFC10e0nnGXiIMTSWrMlpkuxK

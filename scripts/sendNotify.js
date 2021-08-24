@@ -904,6 +904,7 @@ function wxpusherNotify(text, desp) {
                 timeout,
             };
             $.post(options, (err, resp, data) => {
+                console.log(data);
                 try {
                     if (err) {
                         console.log("WxPusher 发送通知调用 API 失败！！\n");
