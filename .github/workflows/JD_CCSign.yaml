@@ -29,7 +29,7 @@ jobs:
           TZ: Asia/Shanghai
           QMSG_KEY: e6f2c5b0021c68f8c70f98219954e717
           QMSG_MODE: group
-          JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
           TG_BOT_TOKEN: 1949709459:AAGP8xZlLtJCd_coJ8l_o4PF0OVxX1imfQw
           TG_USER_ID: 799728773
           PUSH_PLUS_TOKEN: 4c44f4eab11c433ea05d36784c4ee4b8

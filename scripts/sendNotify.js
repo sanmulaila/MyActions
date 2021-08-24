@@ -97,8 +97,8 @@ let QMSG_MODE = "";
 // ======================================= WxPusher 通知设置区域 ===========================================
 // 此处填你申请的 appToken. 官方文档：https://wxpusher.zjiecode.com/docs
 // WP_APP_TOKEN 可在管理台查看: https://wxpusher.zjiecode.com/admin/main/app/appToken
-// WP_TOPICIDS 群发, 发送目标的 topicId, 是一个数组! 使用 WP_UIDS 单发的时候, 可以不传
-// WP_UIDS 发送目标的 UID, 是一个数组。注意 WP_UIDS 和 WP_TOPICIDS 可以同时填写, 也可以只填写一个。
+// WP_TOPICIDS 群发, 发送目标的 topicId, 以 ; 分隔! 使用 WP_UIDS 单发的时候, 可以不传
+// WP_UIDS 发送目标的 uid, 以 ; 分隔。注意 WP_UIDS 和 WP_TOPICIDS 可以同时填写, 也可以只填写一个。
 // WP_URL 原文链接, 可选参数
 let WP_APP_TOKEN = "";
 let WP_TOPICIDS = "";
@@ -219,7 +219,7 @@ async function sendNotify(
     text,
     desp,
     params = {},
-    author = "\n\n 本通知 By： https://github.com/JaimeZeng/MyActions"
+    author = "\n\n 本通知 By: https://github.com/JaimeZeng/MyActions"
 ) {
     // 提供 6 种通知
     desp += author; // 增加作者信息, 防止被贩卖等
@@ -227,7 +227,7 @@ async function sendNotify(
     try {
         fs.accessSync("./tools/account.json");
         remarks = JSON.parse(fs.readFileSync("./tools/account.json").toString());
-    } catch (e) {}
+    } catch (e) { }
     if (remarks) {
         for (let account of remarks) {
             if (account["pt_pin"] && account["remarks"]) {
@@ -275,10 +275,10 @@ function goCQhttp(text, desp) {
 
         return new Promise((resolve) => {
             $.get({
-                    url: `http://${go_cqhttp_url}/${go_cqhttp_method}?${recv_id}=${go_cqhttp_qq}&message=${escape(
-          msg
-        )}`,
-                },
+                url: `http://${go_cqhttp_url}/${go_cqhttp_method}?${recv_id}=${go_cqhttp_qq}&message=${escape(
+                    msg
+                )}`,
+            },
                 (err, resp, data) => {
                     if (!err) {
                         try {
@@ -345,7 +345,7 @@ function serverNotify(text, desp, time = 2100) {
                 });
             }, time);
         } else {
-            console.log("\n您未提供 server 酱的 SCKEY, 取消微信推送消息通知🚫\n");
+            console.log("\n 您未提供 server 酱的 SCKEY, 取消微信推送消息通知🚫\n");
             resolve();
         }
     });
@@ -405,10 +405,10 @@ function BarkNotify(text, desp, params = {}) {
         if (BARK_PUSH) {
             const options = {
                 url: `${BARK_PUSH}/${encodeURIComponent(text)}/${encodeURIComponent(
-          desp
-        )}?sound=${BARK_SOUND}&group=${BARK_GROUP}&${querystring.stringify(
-          params
-        )}`,
+                    desp
+                )}?sound=${BARK_SOUND}&group=${BARK_GROUP}&${querystring.stringify(
+                    params
+                )}`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
@@ -683,7 +683,7 @@ function qywxamNotify(text, desp) {
                                     content_source_url: ``,
                                     content: `${html}`,
                                     digest: `${desp}`,
-                                }, ],
+                                },],
                             },
                         };
                 }
@@ -813,7 +813,7 @@ function pushPlusNotify(text, desp) {
                     if (err) {
                         console.log(
                             `push + 发送 ${PUSH_PLUS_USER ? "一对多" : "一对一"
-              } 通知消息失败！！\n`
+                            } 通知消息失败！！\n`
                         );
                         console.log(err);
                     } else {
@@ -821,12 +821,12 @@ function pushPlusNotify(text, desp) {
                         if (data.code === 200) {
                             console.log(
                                 `push + 发送 ${PUSH_PLUS_USER ? "一对多" : "一对一"
-                } 通知消息完成。\n`
+                                } 通知消息完成。\n`
                             );
                         } else {
                             console.log(
                                 `push + 发送 ${PUSH_PLUS_USER ? "一对多" : "一对一"
-                } 通知消息失败：${data.msg}\n`
+                                } 通知消息失败：${data.msg}\n`
                             );
                         }
                     }
@@ -847,10 +847,11 @@ function pushPlusNotify(text, desp) {
 
 function qmsgNotify(text, desp, time = 2100) {
     return new Promise((resolve) => {
+        message = encodeURI(text + '\n\n' + desp);
         if (QMSG_KEY) {
             const options = {
                 url: `https://qmsg.zendee.cn/${QMSG_MODE}/${QMSG_KEY}`,
-                body: `msg=${text}\n\n${desp}`,
+                body: `msg=${message}`,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
@@ -860,7 +861,7 @@ function qmsgNotify(text, desp, time = 2100) {
                 $.post(options, (err, resp, data) => {
                     try {
                         if (err) {
-                            console.log("qmsg 发送通知调用 API 失败！！\n");
+                            console.log("Qmsg 酱发送通知调用 API 失败！！\n");
                             console.log(err);
                         } else {
                             data = JSON.parse(data);
@@ -876,24 +877,33 @@ function qmsgNotify(text, desp, time = 2100) {
                 });
             }, time);
         } else {
-            console.log("\n\n 您未提供 Qmsg 酱的 KEY, 取消 Qmsg 推送消息通知🚫\n");
+            console.log("您未提供 Qmsg 酱的 KEY, 取消 Qmsg 推送消息通知🚫\n");
             resolve();
         }
     });
 }
 
 function wxpusherNotify(text, desp) {
-    console.log("WxPusher 发送通知消息\n");
     return new Promise((resolve) => {
         if (WP_APP_TOKEN) {
+            let uids = [];
+            for (let i of WP_UIDS.split(";")) {
+                if (i.length != 0)
+                    uids.push(i);
+            };
+            let topicIds = [];
+            for (let i of WP_TOPICIDS.split(";")) {
+                if (i.length != 0)
+                topicIds.push(i);
+            };
             const body = {
-                appToken: `AT_Zo4zOVmpNRriI4la6Iq4DIlaDSqkQDVb`,
+                appToken: `${WP_APP_TOKEN}`,
                 content: `${text}\n\n${desp}`,
                 summary: `${text}`,
                 contentType: 1,
-                // topicIds: `[2897]`,
-                uids: `["UID_0BfEFC10e0nnGXiIMTSWrMlpkuxK"]`,
-                url: `https://github.com/JaimeZeng/MyActions`,
+                topicIds: topicIds,
+                uids: uids,
+                url: `${WP_URL}`,
             };
             const options = {
                 url: `http://wxpusher.zjiecode.com/api/send/message`,
@@ -904,7 +914,6 @@ function wxpusherNotify(text, desp) {
                 timeout,
             };
             $.post(options, (err, resp, data) => {
-                console.log(data);
                 try {
                     if (err) {
                         console.log("WxPusher 发送通知调用 API 失败！！\n");
@@ -922,7 +931,7 @@ function wxpusherNotify(text, desp) {
                 }
             });
         } else {
-            console.log("\n\n 您未提供 WxPusher 的 appToken, 取消 WxPusher 推送消息通知🚫\n");
+            console.log("您未提供 WxPusher 的 appToken, 取消 WxPusher 推送消息通知🚫\n");
             resolve();
         }
     });
@@ -935,8 +944,6 @@ module.exports = {
 
 // prettier-ignore
 function Env(t, e) {
-    // "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
-
     class s {
         constructor(t) {
             this.env = t
@@ -1003,7 +1010,7 @@ function Env(t, e) {
             const i = this.getdata(t);
             if (i) try {
                 s = JSON.parse(this.getdata(t))
-            } catch {}
+            } catch { }
             return s
         }
 
@@ -1119,7 +1126,7 @@ function Env(t, e) {
             this.got = this.got ? this.got : require("got"), this.cktough = this.cktough ? this.cktough : require("tough-cookie"), this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar, t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar))
         }
 
-        get(t, e = (() => {})) {
+        get(t, e = (() => { })) {
             t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]), this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.get(t, (t, s, i) => {
                 !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
             })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, { hints: !1 })), $task.fetch(t).then(t => {
@@ -1143,7 +1150,7 @@ function Env(t, e) {
             }))
         }
 
-        post(t, e = (() => {})) {
+        post(t, e = (() => { })) {
             if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })), $httpClient.post(t, (t, s, i) => {
                 !t && s && (s.body = i, s.statusCode = s.status), e(t, s, i)
             });
