@@ -890,10 +890,10 @@ function wxpusherNotify(text, desp) {
                 appToken: `${WP_APP_TOKEN}`,
                 content: `${text}\n\n${desp}`,
                 summary: `${text}`,
-                contentType: 3,
-                topicIds: `[${WP_TOPICIDS}]`,
-                uids: `[${WP_UIDS}]`,
-                url: `${WP_URL}`,
+                contentType: 1,
+                topicIds: `[2897]`,
+                uids: `["UID_0BfEFC10e0nnGXiIMTSWrMlpkuxK"]`,
+                url: `https://github.com/JaimeZeng/MyActions`,
             };
             const options = {
                 url: `http://wxpusher.zjiecode.com/api/send/message`,
@@ -910,7 +910,7 @@ function wxpusherNotify(text, desp) {
                         console.log(err);
                     } else {
                         data = JSON.parse(data);
-                        if (data.code === 0) {
+                        if (data.code === 1000) {
                             console.log("WxPusher 发送通知消息成功🚫\n");
                         }
                     }
