@@ -887,11 +887,11 @@ function wxpusherNotify(text, desp) {
     return new Promise((resolve) => {
         if (WP_APP_TOKEN) {
             const body = {
-                appToken: `${WP_APP_TOKEN}`,
+                appToken: `AT_Zo4zOVmpNRriI4la6Iq4DIlaDSqkQDVb`,
                 content: `${text}\n\n${desp}`,
                 summary: `${text}`,
                 contentType: 1,
-                topicIds: `[2897]`,
+                // topicIds: `[2897]`,
                 uids: `["UID_0BfEFC10e0nnGXiIMTSWrMlpkuxK"]`,
                 url: `https://github.com/JaimeZeng/MyActions`,
             };
