@@ -39,6 +39,10 @@ jobs:
       - name: Create local changes
         run: |
           yarn global add pangu
+
+          if [ ! -d conf ];then
+                  mkdir conf
+          fi              
           cd conf/
           curl -s --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Conf/Qinglong/config.sample.sh
           curl -s --connect-timeout 3 -o code.sample.sh https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/code.sh
