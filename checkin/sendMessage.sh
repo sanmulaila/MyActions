@@ -29,22 +29,25 @@ urlencode() {
 }
 
 update_msg(){
-    title="<strong>MyActions Update!</strong>\n\n"
+    title="<strong>MyActions Update ⚠️</strong>\n\n"
     repo="https://github.com/JaimeZeng/MyActions"
     author="$(git log -1 --pretty=format:'%cn')"
     date="$(git log -1 --pretty=format:'%ci')"
     hash="$(git log -1 --pretty=format:'%h')"
     files="$(git log -1 --name-status --format='')" 
+    commitLink="https://github.com/JaimeZeng/MyActions/commit/$(git log -1 --pretty=format:'%H')"
     file="\n"
+    fileLink="https://github.com/JaimeZeng/MyActions/blob/main/"
     for var in $(echo "${files}" | cut -f2)
     do
-    file="${file}    ▫ ${var}\n"
+        file="${file}    ▫ <a href='${fileLink}${var}'> ${var} </a>\n"
     done
     message="" 
-    message="${title}🔸 仓库: ${repo}\n" 
+    message="${title}🔸 提交: ${repo}\n" 
     message="${message}🔸 提交者: ${author}\n" 
     message="${message}🔸 提交时间: ${date}\n" 
     message="${message}🔸 提交哈希值: ${hash}\n" 
+    message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a>\n" 
     message="${message}🔸 提交变动文件: ${file}\n"
 }
 
