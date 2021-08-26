@@ -39,13 +39,12 @@ jobs:
       - name: Create local changes
         run: |
           yarn global add pangu
-          sudo apt install rename -y
           cd conf/
           curl -s --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Conf/Qinglong/config.sample.sh
           curl -s --connect-timeout 3 -o code.sample.sh https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/code.sh
           pangu -f code.sample.sh >> code.sample_1.sh
           pangu -f config.sample.sh >> config.sample_1.sh
-          rename "_1" "" *.sh
+          ls *.sh |awk -F "_1" '{print "mv -f "$0" "$1$2""}'|bash
 
           cd ../checkin/
           curl -s --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py
