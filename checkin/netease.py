@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 """
+@FILE    :   action.py
+@DSEC    :   网易云音乐签到刷歌脚本
 @AUTHOR  :   Secriy
 @MODIFIER:   Oreo
 @DATE    :   2020/08/25
