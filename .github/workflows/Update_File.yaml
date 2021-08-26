@@ -57,8 +57,7 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: WxPusher
         run: |
           PUSH_TMP_PATH="./action.tmp"
           apt-get install jq -y
