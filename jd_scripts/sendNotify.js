@@ -219,7 +219,7 @@ async function sendNotify(
     text,
     desp,
     params = {},
-    author = "\n\n 本通知 By: https://github.com/JaimeZeng/MyActions"
+    author = "\n\n 通知自: https://github.com/JaimeZeng/MyActions"
 ) {
     // 提供 6 种通知
     desp += author; // 增加作者信息, 防止被贩卖等

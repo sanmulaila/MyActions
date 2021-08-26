@@ -260,5 +260,7 @@ dist
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij+all,visualstudiocode,node
-scripts/package-lock.json
-scripts/debug.sh
+jd_scripts/package-lock.json
+jd_scripts/debug.sh
+conf/config.sh
+conf/code.sh

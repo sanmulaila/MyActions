@@ -27,7 +27,7 @@ jobs:
 
       - name: Mi Motion
         run: |
-          cd scripts/
+          cd checkin/
           pip3 install requests
           export MI_USER="${{ secrets.MI_USER }}"  
           export MI_PWD="3v4JEuVRYyb3Eh#WCaRTLppj2YTKU"  

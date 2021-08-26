@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Dependencies And Run
         run: |
-          cd scripts/
+          cd jd_scripts/
           npm install
           node jd_redPacket.js
         env:

@@ -15,7 +15,13 @@ jobs:
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
       - name: Create local changes
         run: |
-          cd scripts/
+          cd conf/
+          curl -s --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Conf/Qinglong/config.sample.sh
+          curl -s --connect-timeout 3 -o code.sample.sh https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/code.sh
+          cd ../checkin/
+          curl -s --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py
+
+          cd ../jd_scripts/
           curl -O https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js
           curl -o gua_wealth_island.js https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_cfd_new.js
           curl -O https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_all_bean_change.js
@@ -43,9 +49,36 @@ jobs:
         run: |
           git config --local user.email "78083448+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -m "Add changes." -a
+          # git commit -am "Add changes."
+          git add .
+          git commit -m "Add changes."
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        run: |
+          PUSH_TMP_PATH="./action.tmp"
+          apt-get install jq -y
+          file=$(git log -1 --name-status --format='') 
+          message="## MyActions Update!\n\n"
+          message="${message}- 提交者: $(git log -1 --pretty=format:'%cn')\n" 
+          message="${message}- 提交时间: $(git log -1 --pretty=format:'%ci')\n" 
+          message="${message}- 提交哈希值: $(git log -1 --pretty=format:'%H')\n" 
+          message="${message}- 提交变动文件: $(file)\n" 
+          if [ "${QMSG_KEY}" ]; then
+              echo -e "msg=${result_qmsg_log_text}" >>${PUSH_TMP_PATH}
+              push=$(curl http://wxpusher.zjiecode.com/api/send/message -X POST -d '{"appToken":"{WP_APP_TOKEN}","content":"${message}","contentType":"3", "topicIds":["${WP_TOPICIDS}"] }' -H "Content-Type: application/json" --silent)
+              push_code=$(echo ${push} | jq -r "1000" 2>&1)
+              if [ "${push_code}" -eq 0 ]; then
+                  echo -e "WxPusher 发送通知消息: 成功"
+              else
+                  echo -e "WxPusher 发送通知消息: 失败"
+              fi
+          fi        
+        env:
+          TZ: Asia/Shanghai
+          WP_APP_TOKEN: ${{ secrets.WP_APP_TOKEN }}
+          WP_TOPICIDS: 2897
