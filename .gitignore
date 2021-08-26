@@ -264,3 +264,4 @@ jd_scripts/package-lock.json
 jd_scripts/debug.sh
 conf/config.sh
 conf/code.sh
+checkin/action.tmp
