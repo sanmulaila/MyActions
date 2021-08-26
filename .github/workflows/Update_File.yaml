@@ -67,7 +67,7 @@ jobs:
           message="${message}- 提交时间: $(git log -1 --pretty=format:'%ci')\n" 
           message="${message}- 提交哈希值: $(git log -1 --pretty=format:'%H')\n" 
           message="${message}- 提交变动文件: $(file)\n" 
-          if [ "${QMSG_KEY}" ]; then
+          if [ "${WP_APP_TOKEN}" ]; then
               echo -e "msg=${result_qmsg_log_text}" >>${PUSH_TMP_PATH}
               push=$(curl http://wxpusher.zjiecode.com/api/send/message -X POST -d '{"appToken":"{WP_APP_TOKEN}","content":"${message}","contentType":"3", "topicIds":["${WP_TOPICIDS}"] }' -H "Content-Type: application/json" --silent)
               push_code=$(echo ${push} | jq -r "1000" 2>&1)
