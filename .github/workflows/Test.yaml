@@ -19,6 +19,9 @@ jobs:
       - name: check cookie
         run: |
           set -euxo pipefail
-          echo ${JD_COOKIE}
-          echo ${JD_COOKIE1}
-          echo ${JD_COOKIE3}
+          echo ${JD_COOKIE} >> text.txt
+          cat text.txt
+          echo ${JD_COOKIE1} >> text1.txt
+          cat text1.txt
+          echo ${JD_COOKIE3} >> text3.txt
+          cat text3.txt
