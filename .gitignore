@@ -265,3 +265,6 @@ jd_scripts/debug.sh
 conf/config.sh
 conf/code.sh
 checkin/action.tmp
+conf/jdc_check.py
+conf/JDCookies.txt
+conf/old_jdc.txt
