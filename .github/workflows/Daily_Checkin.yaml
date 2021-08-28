@@ -1,0 +1,30 @@
+name: Daily Checkin
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2,14 * * *" # 16:00 -> 00:00
+
+env:
+  TZ: Asia/Shanghai
+  config: ${{ secrets.CONFIG }}
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.x"]
+    steps:
+      - name: Checkout Codes
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: "x64"
+
+      - name: Daily Checkin
+        run: |

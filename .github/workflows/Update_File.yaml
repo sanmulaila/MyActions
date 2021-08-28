@@ -4,7 +4,7 @@ name: Update Script File
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: '0 */4 * * *'
 
 
 env:
@@ -42,36 +42,42 @@ jobs:
 
       - name: Create local changes
         run: |
+          wget_options='-q -c -N --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=20 -t 3 --no-check-certificate -O'
+          user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
+          aria2c_options='--split=8 --quiet=true --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true -U "${user_agent}"'
+          apt-get install -y aria2
           yarn global add pangu
 
-          if [ ! -d conf ];then
-                  mkdir conf
+          if [ ! -d config ];then
+                  mkdir config
           fi              
-          cd conf/
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Conf/Qinglong/config.sample.sh
-          curl --silent --connect-timeout 3 -o code.sample.sh https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/code.sh
+          cd config/
+          aria2c ${aria2c_options} -o 'config.sample.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Conf/Qinglong/config.sample.sh'
+          aria2c ${aria2c_options} -o 'code.sample.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/code.sh'
+          aria2c ${aria2c_options} -o 'config.template.json' 'https://gitee.com/sitoi/dailycheckin/raw/main/docker/config.template.json'
           pangu -f code.sample.sh >> code.sample_1.sh
           pangu -f config.sample.sh >> config.sample_1.sh
-          ls *.sh |awk -F "_1" '{print "mv -f "$0" "$1$2""}'|bash
+          pangu -f config.template.json >> config.template_1.json
+          ls *.* |awk -F "_1" '{print "mv -f "$0" "$1$2""}'|bash
 
           cd ../checkin/
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py
+          aria2c ${aria2c_options} -o 'netease.py' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py'
+          aria2c ${aria2c_options} -o 'mimotion.py' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py'
 
           cd ../jd_scripts/
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js
-          curl --silent --connect-timeout 3 -o gua_wealth_island.js https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_cfd_new.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_all_bean_change.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/shufflewzc/faker2/main/jd_bean_change_new.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_bean_change.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js
-          curl --silent --connect-timeout 3 -o jd_dreamFactory_tuan.js https://raw.githubusercontent.com/star261/jd/main/scripts/star_dreamFactory_tuan.js 
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxmc.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_redPacket.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/shufflewzc/faker2/main/package.json
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/USER_AGENTS.js
-          curl --silent --connect-timeout 3 -O https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js
+          aria2c ${aria2c_options} -o 'gua_wealth_island_help.js' 'https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js'
+          aria2c ${aria2c_options} -o 'gua_wealth_island.js' 'https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_cfd_new.js'
+          aria2c ${aria2c_options} -o 'jd_all_bean_change.js' 'https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_all_bean_change.js'
+          aria2c ${aria2c_options} -o 'jd_bean_change_new.js' 'https://raw.githubusercontent.com/shufflewzc/faker2/main/jd_bean_change_new.js'
+          aria2c ${aria2c_options} -o 'jd_bean_change.js' 'https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/jd_bean_change.js'
+          aria2c ${aria2c_options} -o 'star_dreamFactory_tuan.js' 'https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ccSign.js'
+          aria2c ${aria2c_options} -o 'jd_dreamFactory_tuan.js' 'https://raw.githubusercontent.com/star261/jd/main/scripts/star_dreamFactory_tuan.js'
+          aria2c ${aria2c_options} -o 'jd_jxlhb.js' 'https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxlhb.js'
+          aria2c ${aria2c_options} -o 'jd_jxmc.js' 'https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_jxmc.js'
+          aria2c ${aria2c_options} -o 'jd_redPacket.js' 'https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_redPacket.js'
+          aria2c ${aria2c_options} -o 'package.json' 'https://raw.githubusercontent.com/shufflewzc/faker2/main/package.json'
+          aria2c ${aria2c_options} -o 'USER_AGENTS.js' 'https://raw.githubusercontent.com/yuannian1112/jd_scripts/main/USER_AGENTS.js'
+          aria2c ${aria2c_options} -o 'jx_sign.js' 'https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js'
           sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i *.js
           sed -e "/if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);/d" -i jd_redPacket.js
 

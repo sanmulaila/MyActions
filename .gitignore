@@ -260,12 +260,13 @@ dist
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij+all,visualstudiocode,node
+checkin/action.tmp
+config/code.sh
+config/config.json
+config/config.sh
+config/jdc_check.py
+config/JDCookies.txt
+config/JDCookies1.txt
+config/old_jdc.txt
 jd_scripts/package-lock.json
 jd_scripts/debug.sh
-conf/config.sh
-conf/code.sh
-checkin/action.tmp
-conf/jdc_check.py
-conf/JDCookies.txt
-conf/old_jdc.txt
-conf/JDCookies1.txt
