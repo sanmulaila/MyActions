@@ -39,7 +39,7 @@ $.innerInviteList = [];
 const HelpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
 
 //是否建筑升级
-let buildLvlUp = true;
+let buildLvlUp = false;
 // 热气球接客 每次运行接客次数
 let serviceNum = 30;// 每次运行接客次数
 if ($.isNode() && process.env.gua_wealth_island_serviceNum) {
