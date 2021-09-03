@@ -270,3 +270,4 @@ config/JDCookies1.txt
 config/old_jdc.txt
 jd_scripts/package-lock.json
 jd_scripts/debug.sh
+config/install_gh_secret.sh
