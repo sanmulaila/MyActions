@@ -1,16 +1,13 @@
 name: Update Script File
 
-
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */4 * * *'
-
+    - cron: "0 */4 * * *"
 
 env:
   TZ: Asia/Shanghai
 
-  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -52,10 +49,16 @@ jobs:
                   mkdir config
           fi              
           cd config/
+          aria2c ${aria2c_options} -o 'checkcookie.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/checkcookie.sh'
+          aria2c ${aria2c_options} -o 'task_before.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh'
           aria2c ${aria2c_options} -o 'config.sample.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Conf/Qinglong/config.sample.sh'
           aria2c ${aria2c_options} -o 'code.sample.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/code.sh'
+          aria2c ${aria2c_options} -o 'extra.sample.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Tasks/qlrepo/extra.sh'
           aria2c ${aria2c_options} -o 'config.template.json' 'https://gitee.com/sitoi/dailycheckin/raw/main/docker/config.template.json'
+          aria2c ${aria2c_options} -o 'Usage.txt' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/Usage.txt'
+          aria2c ${aria2c_options} -o 'doc.txt' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/doc.txt'
           pangu -f code.sample.sh >> code.sample_1.sh
+          pangu -f extra.sample.sh >> extra.sample_1.sh
           pangu -f config.sample.sh >> config.sample_1.sh
           pangu -f config.template.json >> config.template_1.json
           ls *.* |awk -F "_1" '{print "mv -f "$0" "$1$2""}'|bash
@@ -96,6 +99,6 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
-          
+
       - name: sendMessage
         run: bash checkin/sendMessage.sh updateMsg
