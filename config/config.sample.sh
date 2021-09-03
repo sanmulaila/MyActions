@@ -1,6 +1,6 @@
 ## Version: v2.8.0
 ## Date: 2021-06-20
-## Mod: Build20210825-001
+## Mod: Build20210901-001
 ## Update Content: 可持续发展纲要 \n1. session 管理破坏性修改 \n2. 配置管理可编辑 config 下文件 \n3. 自定义脚本改为查看脚本 \n4. 移除互助相关
 
 ## 上面版本号中，如果第 2 位数字有变化，那么代表增加了新的参数，如果只有第 3 位数字有变化，仅代表更新了注释，没有增加新的参数，可更新可不更新
@@ -10,6 +10,9 @@ AutoDelCron="true"
 
 ## 在运行 ql repo 命令时，是否自动增加新的本地定时任务
 AutoAddCron="true"
+
+## 拉取脚本时默认的定时规则，当匹配不到定时规则时使用，例如: 0 9 * * *
+DefaultCronRule="37 0 * * *"
 
 ## ql repo 命令拉取脚本时需要拉取的文件后缀，直接写文件后缀名即可
 RepoFileExtensions="js py ts"
@@ -111,6 +114,7 @@ export GOBOT_TOKEN=""
 export GOBOT_QQ=""
 
 ## 10. 临时屏蔽某个 Cookie
+## 10.1 按 Cookie 序号屏蔽
 ## 如果某些 Cookie 已经失效了，但暂时还没法更新，可以使用此功能在不删除该 Cookie 和重新修改 Cookie 编号的前提下，临时屏蔽掉某些编号的 Cookie
 ## 多个 Cookie 编号以半角的空格分隔，两侧一对半角双引号，使用此功能后，在运行 js 脚本时账户编号将发生变化
 ## 举例 1：TempBlockCookie="2"    临时屏蔽掉 Cookie2
@@ -143,6 +147,41 @@ case $1 in
         ;;
     *)
         TempBlockCookie=""
+        ;;
+esac
+
+## 10.2 按用户名 (pt_pin) 屏蔽
+## 如果某些 Cookie 已经失效了，但暂时还没法更新，可以使用此功能在不删除该 Cookie 和重新修改 Cookie 编号的前提下，临时屏蔽掉某些编号的 Cookie
+## 举例 1：TempBlockPin="张三"                    临时屏蔽掉用户名 (pt_pin) 为 "张三" 的 Cookie
+## 举例 2：TempBlockCookie="张三 jd_13134567890"  临时屏蔽掉用户名 (pt_pin) 为 "张三" 和 "jd_13134567890" 的 Cookie
+
+## 如果只是想要屏蔽某个 Cookie 不参加某些活动，可以参考下面 case 这个命令的例子来控制
+## case $1 in
+##     *jd_fruit*)                               # 东东农场活动脚本关键词
+##         TempBlockPin="张三"                   # 用户名 (pt_pin) 为 "张三" 的 Cookie 不玩东东农场
+##         ;;
+##     *jd_dreamFactory* | *jd_jdfactory*)       # 京喜工厂和东东工厂的活动脚本关键词
+##         TempBlockPin="张三 jd_13134567890"    # 用户名 (pt_pin) 为 "张三" 和 "jd_13134567890" 的 Cookie 不玩京喜工厂和东东工厂
+##         ;;
+##     *jd_jdzz* | *jd_joy*)                     # 京喜赚赚和宠汪汪的活动脚本关键词
+##         TempBlockPin="张三 67890 jd"          # 用户名 (pt_pin) 包含 "张三" 、"67890"、"jd" 的 Cookie 不玩京东赚赚和宠汪汪
+##         ;;
+##     *)                                        # 必选项。其他活动
+##         TempBlockPin=""                       # 必选项。默认为空值，表示其他帐号参加全部活动。填写帐号序号表示指定的用户名 (pt_pin) 只能参加之前 case 选项的活动
+##         ;;
+## esac
+case $1 in
+    *jd_fruit*)
+        TempBlockPin=""
+        ;;
+    *jd_dreamFactory* | *jd_jdfactory*)
+        TempBlockPin=""
+        ;;
+    *jd_jdzz* | *jd_joy*)
+        TempBlockPin=""
+        ;;
+    *)
+        TempBlockPin=""
         ;;
 esac
 
@@ -608,7 +647,7 @@ export CleanUsers=""
 ### 第一个账号助力 Tsukasa007，其他依次助力 CK1 第一个 CK 失效应该全都会助力 Tsukasa007，亲注意一下（其他脚本逻辑都差不多）
 ### 一天只能领 400 豆 1 个 ck20 豆，不设置变量默认只会运行到 ck21，填写 11 就是跑到 11 个 ck 就停止，填写 21 就是跑到 21 个 ck 就停止，如果没豆那就改变量，ck 多每天改一次收益最大化
 export JD_OPENCARE_CHAMPIONSHIP=""
-## 2、7.28-8.9 夏日呵护 母音甄选	
+## 2、7.28-8.9 夏日呵护 母音甄选 
 ### 一天只能领 100 豆 1 个 ck10 豆，不设置变量默认只会运行到 ck11，填写 11 就是跑到 11 个 ck 就停止，填写 22 就是跑到 22 个 ck 就停止，一天最多助力 10 个 ck，推荐 11 的倍数填写！！如果 11 没豆那就 22 如此类推，每天改一次收益最大化
 export JD_SUMMER_MOM_OPENCARD=""
 ## 3、7.29-8.9 奥运夺金挑战赛
@@ -629,4 +668,3 @@ export JD_OPENCARD_EAT_OPEN_OPENCARD=""
 ## 8、8.5-8.12 大牌联合 冰爽一夏 钜惠送好礼
 ### 填写 11 就是跑到 11 个 ck 就停止，填写 21 就是跑到 21 个 ck 就停止，一天最多助力 20 个 ck，推荐 10 的倍数 +1 填写！！
 export JD_OPENCARD_COOL_SUMMER2=""
-
