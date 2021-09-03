@@ -80,7 +80,7 @@ jobs:
           aria2c ${aria2c_options} -o 'jx_sign.js' 'https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jx_sign.js'
           sed -e 's|"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);||g' -i *.js
           sed -e "/if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);/d" -i jd_redPacket.js
-          sed -e 's|const HelpAuthorFlag = true|const HelpAuthorFlag = true|g' -i gua_wealth_island.js
+          sed -e 's|const HelpAuthorFlag = true|const HelpAuthorFlag = false|g' -i gua_wealth_island.js
           sed -e 's|let buildLvlUp = true|let buildLvlUp = false|g' -i gua_wealth_island.js
 
       - name: Commit files
