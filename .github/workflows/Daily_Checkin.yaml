@@ -7,8 +7,9 @@ on:
 
 env:
   TZ: Asia/Shanghai
-  config: ${{ secrets.CONFIG }}
-
+  CHECK_JSON: ${{ secrets.CHECK_JSON }}
+  TG_BOT_TOKEN: 1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw
+  TG_USER_ID: 799728773
 
 jobs:
   build:
@@ -19,14 +20,10 @@ jobs:
     steps:
       - name: Checkout Codes
         uses: actions/checkout@v2
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
           architecture: "x64"
-
       - name: Daily Checkin
-        run: |
-          # python3 -m pip install cryptography~=3.2.1 requests rsa
-
+        run: bash checkin.sh

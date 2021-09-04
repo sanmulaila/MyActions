@@ -6,7 +6,7 @@ TELEGRAMBOT_TOKEN="1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw"
 TELEGRAMBOT_CHATID="799728773"
 PUSH_TMP_PATH="./action.tmp"
 
-urlencode() {
+function urlencode() {
     # urlencode <string>
 
     old_lang=$LANG
@@ -28,7 +28,12 @@ urlencode() {
     LC_COLLATE=$old_lc_collate
 }
 
-update_msg(){
+function weather(){
+    wget -O "yanta.png" "wttr.in/雁塔区.png?lang=zh"
+    wget -O "jingtai.png" "wttr.in/景泰县.png?lang=zh"
+}
+
+function update_msg(){
     title="<strong>MyActions Update ⚠️</strong>\n\n"
     repo="https://github.com/JaimeZeng/MyActions"
     author="$(git log -1 --pretty=format:'%cn')"
@@ -51,10 +56,23 @@ update_msg(){
     message="${message}🔸 提交变动文件: ${file}\n"
 }
 
-send_msg(){
+function send_msg(){
     if [ "${TELEGRAMBOT_TOKEN}" ] && [ "${TELEGRAMBOT_CHATID}" ]; then
-        echo -e "chat_id=${TELEGRAMBOT_CHATID}&parse_mode=HTML&text=${message}" >${PUSH_TMP_PATH}
+        echo -e "chat_id=${TELEGRAMBOT_CHATID}&text=${message}&parse_mode=HTML&disable_web_page_preview=true" >${PUSH_TMP_PATH}
         push=$(curl -k -s --data-binary @${PUSH_TMP_PATH} "https://api.telegram.org/bot${TELEGRAMBOT_TOKEN}/sendMessage")
+        push_code=$(echo ${push} | grep -o '"ok":true')
+        if [ ${push_code} ]; then
+            echo -e "TelegramBot 推送结果: 成功"
+        else
+            echo -e "TelegramBot 推送结果: 失败"
+        fi
+    fi
+}
+
+function send_photo(){
+    if [ "${TELEGRAMBOT_TOKEN}" ] && [ "${TELEGRAMBOT_CHATID}" ]; then
+        echo -e "chat_id=${TELEGRAMBOT_CHATID}&photo=wttr.in/雁塔区.png?lang=zh" >${PUSH_TMP_PATH}
+        push=$(curl -k -s --data-binary @${PUSH_TMP_PATH} "https://api.telegram.org/bot${TELEGRAMBOT_TOKEN}/sendPhoto")
         push_code=$(echo ${push} | grep -o '"ok":true')
         if [ ${push_code} ]; then
             echo -e "TelegramBot 推送结果: 成功"
@@ -66,5 +84,6 @@ send_msg(){
 
 if [ "$1" == "updateMsg" ]; then
     update_msg
+    send_msg
 fi
-send_msg
+

@@ -28,7 +28,8 @@ function update_file() {
     cd ${checkin_dir}/
     aria2c ${aria2c_options} -o 'netease.py' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py'
     aria2c ${aria2c_options} -o 'mimotion.py' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py'
-    aria2c ${aria2c_options} -o 'check.multiple.simple.json' 'https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.multiple.json'
+    aria2c ${aria2c_options} 'https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.multiple.json'
+    aria2c ${aria2c_options} 'https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.sample.json'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/checksendNotify.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_bilibili.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_cloud189.py'
@@ -44,7 +45,8 @@ function update_file() {
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/getENV.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/motto.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/weather.py'
-    pangu -f check.multiple.simple.json >>check.multiple.simple.json.bak
+    pangu -f check.multiple.json >>check.multiple.json.bak
+    pangu -f check.sample.json >>check.sample.json.bak
     rename -f 's/\.bak$//' *.bak
 
     cd ${conf_dir}/
