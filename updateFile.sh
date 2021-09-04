@@ -10,8 +10,8 @@ conf_dir="${cur_dir}/config"
 jdc_dir="${cur_dir}/jd_scripts"
 wget_options='-q -c -N --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=20 -t 3 --no-check-certificate -O'
 user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
-aria2c_options='--split=8 --quiet=true --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true -U "${user_agent}"'
-# aria2c_options='--split=8 --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true --all-proxy=http://127.0.0.1:8889 -U "${user_agent}"'
+aria2c_options='--split=8 --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true -U "${user_agent}"'
+# aria2c_options='--split=8 --quiet=true --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true --all-proxy=http://127.0.0.1:8889 -U "${user_agent}"'
 
 function mk_dir() {
     for folder in "${checkin_dir}" "${conf_dir}" "${jdc_dir}"; do
