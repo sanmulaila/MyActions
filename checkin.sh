@@ -12,7 +12,7 @@ check_config_file="${checkin_dir}/check.json"
 cd ${checkin_dir}
 touch ${env_file}
 python3 -m pip install cryptography~=3.2.1 requests rsa
-cat ${CHECK_JSON} >>${check_config_file}
+echo "${CHECK_JSON}" >"${check_config_file}"
 sed -e "s|/ql/config/env.sh|${env_file}|g" -i getENV.py
 sed -e "s|/ql/config/check.json|${check_config_file}|g" -i getENV.py
 

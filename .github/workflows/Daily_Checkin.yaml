@@ -27,3 +27,15 @@ jobs:
           architecture: "x64"
       - name: Daily Checkin
         run: bash checkin.sh
+      - name: Weather
+        run: |
+          wget -O "yanta.png" "wttr.in/雁塔区.png?lang=zh"
+          wget -O "jingtai.png" "wttr.in/景泰县.png?lang=zh"
+      - name: Send photo message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: Weather
+          photo: yanta.png,jingtai.png
+          document: jingtai.png
