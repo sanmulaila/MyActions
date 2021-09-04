@@ -49,15 +49,15 @@ jobs:
           message="${message}🔸 提交哈希值: ${hash}\n" 
           message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a>\n" 
           message="${message}🔸 提交变动文件: ${file}\n\n"
-          message="${message} ➖➖➖➖➖➖➖➖"
-          message="${message} <img src='https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA.png?lang=zh' alt='smile' />"
-          message="${message} <img src='https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF.png?lang=zh' alt='smile' />"
-          echo "${message}" > message.txt
+          export msg="${message}"
+          wget -O "yanta.png" https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA_2qn.png
+          wget -O "jingtai.png" https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF_2qn.png
       - name: Send telegram message
         uses: appleboy/telegram-action@master
         with:
           to: 799728773
           token: 1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw
-          message_file: message.txt
+          message: ${msg}
           format: html
           disable_web_page_preview: true
+          photo: yanta.png, jingtai.png
