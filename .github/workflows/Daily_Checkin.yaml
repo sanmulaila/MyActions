@@ -25,8 +25,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: "x64"
-      - name: Daily Checkin
-        run: bash checkin.sh
+      # - name: Daily Checkin
+      #   run: bash checkin.sh
       - name: Weather
         run: |
           wget -O "yanta.png" "wttr.in/雁塔区.png?lang=zh"
@@ -34,8 +34,8 @@ jobs:
       - name: Send photo message
         uses: appleboy/telegram-action@master
         with:
-          to: ${{ secrets.TG_USER_ID }}
-          token: ${{ secrets.TG_BOT_TOKEN }}
+          to: 799728773
+          token: 1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw
           message: Weather
           photo: yanta.png,jingtai.png
           document: jingtai.png
