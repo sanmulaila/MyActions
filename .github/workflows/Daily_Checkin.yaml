@@ -27,15 +27,37 @@ jobs:
           architecture: "x64"
       # - name: Daily Checkin
       #   run: bash checkin.sh
-      - name: Weather
+      - name: Telegram Message
         run: |
-          wget -O "yanta.png" "wttr.in/雁塔区.png?lang=zh"
-          wget -O "jingtai.png" "wttr.in/景泰县.png?lang=zh"
-      - name: Send photo message
+          title="<strong>MyActions Update ⚠️</strong><br /><br />"
+          repo="https://github.com/JaimeZeng/MyActions"
+          author="$(git log -1 --pretty=format:'%cn')"
+          date="$(git log -1 --pretty=format:'%ci')"
+          hash="$(git log -1 --pretty=format:'%h')"
+          files="$(git log -1 --name-status --format='')" 
+          commitLink="https://github.com/JaimeZeng/MyActions/commit/$(git log -1 --pretty=format:'%H')"
+          file="<br />"
+          fileLink="https://github.com/JaimeZeng/MyActions/blob/main/"
+          for var in $(echo "${files}" | cut -f2)
+          do
+              file="${file}    ▫ <a href='${fileLink}${var}'> ${var} </a><br />"
+          done
+          message="" 
+          message="${title}🔸 提交: ${repo}<br />" 
+          message="${message}🔸 提交者: ${author}<br />" 
+          message="${message}🔸 提交时间: ${date}<br />" 
+          message="${message}🔸 提交哈希值: ${hash}<br />" 
+          message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a><br />" 
+          message="${message}🔸 提交变动文件: ${file}<br /><br />"
+          message="${message} ➖➖➖➖➖➖➖➖"
+          message="${message} <img src='https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA.png?lang=zh' alt='smile' />"
+          message="${message} <img src='https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF.png?lang=zh' alt='smile' />"
+          echo "${message}" > message.txt
+      - name: Send telegram message
         uses: appleboy/telegram-action@master
         with:
           to: 799728773
           token: 1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw
-          message: Weather
-          photo: yanta.png,jingtai.png
-          document: jingtai.png
+          message_file: message.txt
+          format: html
+          disable_web_page_preview: true
