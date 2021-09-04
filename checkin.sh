@@ -15,6 +15,7 @@ python3 -m pip install cryptography~=3.2.1 requests rsa
 echo "${CHECK_JSON}" >"${check_config_file}"
 sed -e "s|/ql/config/env.sh|${env_file}|g" -i getENV.py
 sed -e "s|/ql/config/check.json|${check_config_file}|g" -i getENV.py
+sed -e "s|/ql/config/check.json|${check_config_file}|g" -i checksendNotify.py
 
 sleep 10 && python3 ck_bilibili.py
 sleep 10 && python3 ck_cloud189.py
