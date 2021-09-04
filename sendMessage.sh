@@ -2,7 +2,7 @@
 PATH="/usr/local/bin:/usr/bin:/bin"
 # set -euxo pipefail
 
-TELEGRAMBOT_TOKEN="1904539307:AAFzLkpxpalwsNd0ArGBJB46im-M07ALtkE"
+TELEGRAMBOT_TOKEN="1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw"
 TELEGRAMBOT_CHATID="799728773"
 PUSH_TMP_PATH="./action.tmp"
 
