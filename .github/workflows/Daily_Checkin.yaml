@@ -29,26 +29,26 @@ jobs:
       #   run: bash checkin.sh
       - name: Telegram Message
         run: |
-          title="<strong>MyActions Update ⚠️</strong><br /><br />"
+          title="<strong>MyActions Update ⚠️</strong>\n\n"
           repo="https://github.com/JaimeZeng/MyActions"
           author="$(git log -1 --pretty=format:'%cn')"
           date="$(git log -1 --pretty=format:'%ci')"
           hash="$(git log -1 --pretty=format:'%h')"
           files="$(git log -1 --name-status --format='')" 
           commitLink="https://github.com/JaimeZeng/MyActions/commit/$(git log -1 --pretty=format:'%H')"
-          file="<br />"
+          file="\n"
           fileLink="https://github.com/JaimeZeng/MyActions/blob/main/"
           for var in $(echo "${files}" | cut -f2)
           do
-              file="${file}    ▫ <a href='${fileLink}${var}'> ${var} </a><br />"
+              file="${file}    ▫ <a href='${fileLink}${var}'> ${var} </a>\n"
           done
           message="" 
-          message="${title}🔸 提交: ${repo}<br />" 
-          message="${message}🔸 提交者: ${author}<br />" 
-          message="${message}🔸 提交时间: ${date}<br />" 
-          message="${message}🔸 提交哈希值: ${hash}<br />" 
-          message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a><br />" 
-          message="${message}🔸 提交变动文件: ${file}<br /><br />"
+          message="${title}🔸 提交: ${repo}\n" 
+          message="${message}🔸 提交者: ${author}\n" 
+          message="${message}🔸 提交时间: ${date}\n" 
+          message="${message}🔸 提交哈希值: ${hash}\n" 
+          message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a>\n" 
+          message="${message}🔸 提交变动文件: ${file}\n\n"
           message="${message} ➖➖➖➖➖➖➖➖"
           message="${message} <img src='https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA.png?lang=zh' alt='smile' />"
           message="${message} <img src='https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF.png?lang=zh' alt='smile' />"
