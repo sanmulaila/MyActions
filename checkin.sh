@@ -33,4 +33,4 @@ sed -e "s|/ql/repo/Oreomeow_checkinpanel/city.json|${city_file}|g" -i weather.py
 # sleep 10 && python3 mimotion.py
 # sleep 10 && python3 motto.py
 # sleep 10 && python3 netease.py
-sleep 10 && python3 weather.py
+# sleep 10 && python3 weather.py
