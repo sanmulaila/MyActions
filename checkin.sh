@@ -25,7 +25,7 @@ sed -e "s|/ql/config/check.json|${check_config_file}|g" -i checksendNotify.py
 # sleep 10 && python3 ck_pojie.py
 # sleep 10 && python3 ck_smzdm.py
 # sleep 10 && python3 ck_tieba.py
-sleep 10 && python3 ck_v2ex.py
+# sleep 10 && python3 ck_v2ex.py
 # sleep 10 && python3 ck_womail.py
 sleep 10 && python3 ck_youdao.py
 # sleep 10 && python3 mimotion.py
