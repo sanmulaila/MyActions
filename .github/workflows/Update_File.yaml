@@ -45,9 +45,6 @@ jobs:
           sudo apt-get install -y aria2
           yarn global add pangu
 
-          if [ ! -d config ];then
-                  mkdir config
-          fi              
           cd config/
           aria2c ${aria2c_options} -o 'checkcookie.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/checkcookie.sh'
           aria2c ${aria2c_options} -o 'task_before.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/task_before.sh'
@@ -66,6 +63,24 @@ jobs:
           cd ../checkin/
           aria2c ${aria2c_options} -o 'netease.py' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py'
           aria2c ${aria2c_options} -o 'mimotion.py' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py'
+          aria2c ${aria2c_options} -o 'check.multiple.simple.json' https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.multiple.json'
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/checksendNotify.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_bilibili.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_cloud189.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_csdn.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_mimotion.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_music163.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_pojie.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_smzdm.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_tieba.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_v2ex.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_womail.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_youdao.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/getENV.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/motto.py
+          aria2c ${aria2c_options} https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/weather.py
+          pangu -f check.multiple.simple.json >> check.multiple.simple_1.json
+          ls *.* |awk -F "_1" '{print "mv -f "$0" "$1$2""}'|bash
 
           cd ../jd_scripts/
           aria2c ${aria2c_options} -o 'gua_wealth_island_help.js' 'https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js'
