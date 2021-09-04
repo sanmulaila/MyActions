@@ -1,5 +1,5 @@
 #!/bin/bash -i
-set -e
+set -euxo pipefail
 
 cur_dir=$(
     cd $(dirname $0)
