@@ -49,7 +49,7 @@ jobs:
           message="${message}🔸 提交哈希值: ${hash}\n" 
           message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a>\n" 
           message="${message}🔸 提交变动文件: ${file}\n\n"
-          export msg="${message}"
+          echo "${message}" >> msg.txt
           wget -O "yanta.png" https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA_2qn.png
           wget -O "jingtai.png" https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF_2qn.png
       - name: Send telegram message
@@ -57,7 +57,7 @@ jobs:
         with:
           to: 799728773
           token: 1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw
-          message: ${msg}
+          message_file: msg.txt
           format: html
           disable_web_page_preview: true
           photo: yanta.png, jingtai.png
