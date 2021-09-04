@@ -44,8 +44,8 @@ function update_file() {
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/getENV.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/motto.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/weather.py'
-    pangu -f check.multiple.simple.json >>check.multiple.simple_1.json
-    ls *.* | awk -F "_1" '{print "mv -f "$0" "$1$2""}' | bash
+    pangu -f check.multiple.simple.json >>check.multiple.simple.json.bak
+    rename 's/\.bak$//' *.bak
 
     cd ${conf_dir}/
     aria2c ${aria2c_options} -o 'checkcookie.sh' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/checkcookie.sh'
@@ -56,11 +56,11 @@ function update_file() {
     aria2c ${aria2c_options} -o 'config.template.json' 'https://gitee.com/sitoi/dailycheckin/raw/main/docker/config.template.json'
     aria2c ${aria2c_options} -o 'Usage.txt' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/Usage.txt'
     aria2c ${aria2c_options} -o 'doc.txt' 'https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/sh/Helpcode2.8/doc.txt'
-    pangu -f code.sample.sh >>code.sample_1.sh
-    pangu -f extra.sample.sh >>extra.sample_1.sh
-    pangu -f config.sample.sh >>config.sample_1.sh
-    pangu -f config.template.json >>config.template_1.json
-    ls *.* | awk -F "_1" '{print "mv -f "$0" "$1$2""}' | bash
+    pangu -f code.sample.sh >>code.sample.sh.bak
+    pangu -f extra.sample.sh >>extra.sample.sh.bak
+    pangu -f config.sample.sh >>config.sample.sh
+    pangu -f config.template.json >>config.template.json.bak
+    rename 's/\.bak$//' *.bak
 
     cd ${jdc_dir}/
     aria2c ${aria2c_options} -o 'gua_wealth_island_help.js' 'https://raw.githubusercontent.com/smiek2221/scripts/master/gua_wealth_island_help.js'
