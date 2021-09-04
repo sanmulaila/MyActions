@@ -8,6 +8,7 @@ cur_dir=$(
 checkin_dir="${cur_dir}/checkin"
 env_file="${checkin_dir}/env.sh"
 check_config_file="${checkin_dir}/check.json"
+city_file="${checkin_dir}/city.json"
 
 cd ${checkin_dir}
 touch ${env_file}
@@ -16,6 +17,7 @@ echo "${CHECK_JSON}" >"${check_config_file}"
 sed -e "s|/ql/config/env.sh|${env_file}|g" -i getENV.py
 sed -e "s|/ql/config/check.json|${check_config_file}|g" -i getENV.py
 sed -e "s|/ql/config/check.json|${check_config_file}|g" -i checksendNotify.py
+sed -e "s|/ql/repo/Oreomeow_checkinpanel/city.json|${city_file}|g" -i weather.py
 
 # sleep 10 && python3 ck_bilibili.py
 # sleep 10 && python3 ck_cloud189.py
@@ -27,8 +29,8 @@ sed -e "s|/ql/config/check.json|${check_config_file}|g" -i checksendNotify.py
 # sleep 10 && python3 ck_tieba.py
 # sleep 10 && python3 ck_v2ex.py
 # sleep 10 && python3 ck_womail.py
-sleep 10 && python3 ck_youdao.py
+# sleep 10 && python3 ck_youdao.py
 # sleep 10 && python3 mimotion.py
-sleep 10 && python3 motto.py
+# sleep 10 && python3 motto.py
 # sleep 10 && python3 netease.py
 sleep 10 && python3 weather.py
