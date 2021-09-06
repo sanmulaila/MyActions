@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-## Mod: Build20210903V1
+## Mod: Build20210906V1
 ## 添加你需要重启自动执行的任意命令，比如 ql repo
 ## 安装 node 依赖使用 pnpm install -g xxx xxx（Build 20210728-002 及以上版本的 code.sh，可忽略）
 ## 安装 python 依赖使用 pip3 install xxx（Build 20210728-002 及以上版本的 code.sh，可忽略）
@@ -64,7 +64,7 @@ CR3 (){
     ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "Coupon|update" "^jd [^_]|USER|^sign|^ZooFaker|utils"
 }
 CR4 (){
-    ql repo https://github.com/shufflewzc/faker2.git "jd_|jx_|gua_|jddj_|getJDCookie" "activity|backUp|Coupon|update" "^jd [^_]|USER|utils|^JS|^TS|^JDJRValidator_Pure|^ZooFaker|^sign"
+    ql repo https://github.com/shufflewzc/faker2.git "jd_|jx_|gua_|jddj_|getJDCookie" "activity|backUp|Coupon|update" "^jd [^_]|USER|utils|function|^JS|^TS|^JDJRValidator_Pure|^ZooFaker|^sign|ql"
 }
 CR6 (){
     ql repo https://github.com/Aaron-lv/sync.git "jd_|jx_|getJDCookie" "activity|backUp|Coupon" "^jd [^_]|USER|utils" "jd_scripts"
