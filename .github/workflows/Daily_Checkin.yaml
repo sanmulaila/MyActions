@@ -25,39 +25,18 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           architecture: "x64"
-      # - name: Daily Checkin
-      #   run: bash checkin.sh
-      - name: Telegram Message
-        run: |
-          title="<strong>MyActions Update ⚠️</strong>\n\n"
-          repo="https://github.com/JaimeZeng/MyActions"
-          author="$(git log -1 --pretty=format:'%cn')"
-          date="$(git log -1 --pretty=format:'%ci')"
-          hash="$(git log -1 --pretty=format:'%h')"
-          files="$(git log -1 --name-status --format='')" 
-          commitLink="https://github.com/JaimeZeng/MyActions/commit/$(git log -1 --pretty=format:'%H')"
-          file="\n"
-          fileLink="https://github.com/JaimeZeng/MyActions/blob/main/"
-          for var in $(echo "${files}" | cut -f2)
-          do
-              file="${file}    ▫ <a href='${fileLink}${var}'> ${var} </a>\n"
-          done
-          message="" 
-          message="${title}🔸 提交: ${repo}\n" 
-          message="${message}🔸 提交者: ${author}\n" 
-          message="${message}🔸 提交时间: ${date}\n" 
-          message="${message}🔸 提交哈希值: ${hash}\n" 
-          message="${message}🔸 具体提交信息: <a href='${commitLink}'> 👉🏻 Github </a>\n" 
-          message="${message}🔸 提交变动文件: ${file}\n\n"
-          echo "${message}" >> msg.txt
-          wget -O "yanta.png" https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA_2qn.png
-          wget -O "jingtai.png" https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF_2qn.png
+      - name: Daily Checkin
+        run: bash checkin.sh
+      # - name: Telegram Message
+      #   run: |
+      #     wget -O "yanta.png" https://wttr.in/%E9%9B%81%E5%A1%94%E5%8C%BA_2qn.png
+      #     wget -O "jingtai.png" https://wttr.in/%E6%99%AF%E6%B3%B0%E5%8E%BF_2qn.png
       - name: Send telegram message
         uses: appleboy/telegram-action@master
         with:
           to: 799728773
           token: 1956279314:AAHxGyt1owBsFFVwKri3_liP8SOd7tabvnw
-          message_file: msg.txt
-          format: html
+          # message_file: msg.txt
+          # format: html
           disable_web_page_preview: true
-          photo: yanta.png, jingtai.png
+          # photo: yanta.png, jingtai.png

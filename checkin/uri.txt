@@ -1,0 +1,32 @@
+https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/netease.py
+https://raw.githubusercontent.com/Oreomeow/VIP/main/Scripts/py/mimotion.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.multiple.json
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.sample.json
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/checksendNotify.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/city.json
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_bilibili.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_cloud189.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_csdn.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_mimotion.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_music163.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_pojie.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_smzdm.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_tieba.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_v2ex.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_womail.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_youdao.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/env_utils.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/motto.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/notify.json5
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/utils.py
+https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/weather.py
+
+
+
+cp *.mp4 video/
+cp *.m4a *.jpg audio/
+cd audio/
+find . -type f -print0 | xargs -0 stat --printf="%N\n" | xargs rnm -rs "/.*《(.*?)》.*((\.jpg)|(\.m4a)|(\.mp4))/TheMix 多语种乐团 - \1\2/" 
+rename -n "s/.*《(.*?)》.*\(.(doc)|(rar)|(jpg))/TheMix 多语种乐团 - \1\2/" '高燃！九种语言版G.E.M邓紫棋燃炸单曲《无双的王者》：rap加电！高音炸耳！.jpg'
+
+rnm -rs "/.*《(.*?)》.*(\.(jpg)|(m4a)|(mp4))/TheMix 多语种乐团 - \1\2/" '高燃！九种语言版G.E.M邓紫棋燃炸单曲《无双的王者》：rap加电！高音炸耳！.m4a'

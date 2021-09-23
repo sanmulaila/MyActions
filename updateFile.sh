@@ -10,7 +10,7 @@ conf_dir="${cur_dir}/config"
 jdc_dir="${cur_dir}/jd_scripts"
 wget_options='-q -c -N --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=20 -t 3 --no-check-certificate -O'
 user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'
-aria2c_options='--split=8 --quiet=true --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true -U "${user_agent}"'
+aria2c_options='--quiet=true --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true -U "${user_agent}"'
 # aria2c_options='--split=8 --max-connection-per-server=8 --retry-wait=20 --timeout=20 --check-certificate=false --allow-overwrite=true --all-proxy=http://127.0.0.1:8889 -U "${user_agent}"'
 
 function mk_dir() {
@@ -31,6 +31,7 @@ function update_file() {
     aria2c ${aria2c_options} 'https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.multiple.json'
     aria2c ${aria2c_options} 'https://raw.githubusercontent.com/Oreomeow/checkinpanel/master/check.sample.json'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/checksendNotify.py'
+    aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/city.json'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_bilibili.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_cloud189.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_csdn.py'
@@ -42,9 +43,13 @@ function update_file() {
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_v2ex.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_womail.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/ck_youdao.py'
-    aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/getENV.py'
+    aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/env_utils.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/motto.py'
+    aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/notify.json5'
+    aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/utils.py'
     aria2c ${aria2c_options} 'http://raw.githubusercontent.com/Oreomeow/checkinpanel/master/weather.py'
+
+    
     pangu -f check.multiple.json >>check.multiple.json.bak
     pangu -f check.sample.json >>check.sample.json.bak
     rename -f 's/\.bak$//' *.bak
