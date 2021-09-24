@@ -19,31 +19,31 @@ jobs:
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-      # - name: Create local changes
-      #   run: |
-      #     sudo apt install jq curl wget -y
-      #     cd update/
-      #     joplin_now_ver=$(cat joplin_version)
-      #     joplin_new_ver=$(wget --no-check-certificate -qO- https://api.github.com/repos/laurent22/joplin/releases/latest | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
+      - name: Create local changes
+        run: |
+          sudo apt install jq curl wget -y
+          cd update/
+          joplin_now_ver=$(cat joplin_version)
+          joplin_new_ver=$(wget --no-check-certificate -qO- https://api.github.com/repos/laurent22/joplin/releases/latest | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
 
-      #     if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
-      #         echo -e "发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})"
-      #         echo "${joplin_new_ver}" >joplin_version
-      #     else
-      #         echo -e "当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" && exit 1
-      #     fi
-      # - name: Commit files
-      #   run: |
-      #     git config --local user.email "78083448+github-actions[bot]@users.noreply.github.com"
-      #     git config --local user.name "github-actions[bot]"
-      #     # git commit -am "Add changes."
-      #     git add .
-      #     git commit -m "Add changes."
-      # - name: Push changes
-      #   uses: ad-m/github-push-action@master
-      #   with:
-      #     github_token: ${{ secrets.TOKEN }}
-      #     branch: ${{ github.ref }}
+          if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
+              echo -e "发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})"
+              echo "${joplin_new_ver}" >joplin_version
+          else
+              echo -e "当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" && exit 1
+          fi
+      - name: Commit files
+        run: |
+          git config --local user.email "78083448+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # git commit -am "Add changes."
+          git add .
+          git commit -m "Add changes."
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          branch: ${{ github.ref }}
       - name: Download joplin and upload
         run: |
           pwd && cd update/
