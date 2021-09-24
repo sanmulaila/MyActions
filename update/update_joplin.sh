@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-set -euxo pipefail
+# set -euxo pipefail
 
 #============================================================
 #	System Required: Ubuntu
@@ -47,7 +47,7 @@ function clean_file() {
 
 function upload_joplin() {
     cd ${cur_dir}
-    ./LightUploader -c config.json -f "${joplin_new_ver}" -r "public/github-release/laurent22-joplin/" -t 6 -b 20 >>${update_log}
+    ./LightUploader -c config.json -f "${joplin_new_ver}" -r "public/github-release/laurent22-joplin/" -t 6 -b 20 -tgbot ${tg_bot_token} -uid ${tg_user_id}
 }
 
 function download_joplin() {
@@ -67,7 +67,6 @@ function download_joplin() {
             echo -e "${Error} ${joplin_file} 下载失败 !" >>${update_log} && exit 1
         fi
     done
-    upload_joplin
 }
 
 function check_new_ver() {
@@ -83,21 +82,22 @@ function check_now_ver() {
 }
 
 function check_ver_comparison() {
-    # check_new_ver
-    # check_now_ver
-    download_joplin
-    # if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
-    #     echo -e "${Info} 发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})" >>${update_log}
-    #     download_joplin
-    # else
-    #     echo -e "${Info} 当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" >>${update_log} && exit 1
-    # fi
+    check_new_ver
+    check_now_ver
+    if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
+        echo -e "${Info} 发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})" >>${update_log}
+        download_joplin
+    else
+        echo -e "${Info} 当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" >>${update_log} && exit 1
+    fi
 }
 
 echo -e "<strong>Joplin Update ⚠️</strong>\n" >${update_log}
 echo -e "- date: ${datetime}" >>${update_log}
 echo -e "- workflow: <a href='${github_workflow}'> 👉🏻 Github Workflow </a>" >>${update_log}
 echo -e "\n====== log ======" >>${update_log}
-check_ver_comparison
+# check_ver_comparison
+download_joplin
+upload_joplin
 send_msg
 clean_file
