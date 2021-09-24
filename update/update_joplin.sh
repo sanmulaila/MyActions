@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-# set -euxo pipefail
+set -euxo pipefail
 
 #============================================================
 #	System Required: Ubuntu
@@ -25,6 +25,7 @@ Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
 joplin_version="${cur_dir}/joplin_version"
+joplin_new_ver=$(wget --no-check-certificate -qO- https://api.github.com/repos/laurent22/joplin/releases/latest | grep -o '"tag_name": ".*"' | head -n 1 | sed 's/"//g;s/v//g' | sed 's/tag_name: //g')
 
 function send_msg() {
     if [[ "${tg_bot_token}" ]] && [[ "${tg_user_id}" ]]; then
