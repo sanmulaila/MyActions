@@ -82,14 +82,15 @@ function check_now_ver() {
 }
 
 function check_ver_comparison() {
-    check_new_ver
-    check_now_ver
-    if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
-        echo -e "${Info} 发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})" >>${update_log}
-        download_joplin
-    else
-        echo -e "${Info} 当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" >>${update_log} && exit 1
-    fi
+    # check_new_ver
+    # check_now_ver
+    download_joplin
+    # if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
+    #     echo -e "${Info} 发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})" >>${update_log}
+    #     download_joplin
+    # else
+    #     echo -e "${Info} 当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" >>${update_log} && exit 1
+    # fi
 }
 
 echo -e "<strong>Joplin Update ⚠️</strong>\n" >${update_log}
