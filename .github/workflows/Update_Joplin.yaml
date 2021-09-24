@@ -30,7 +30,7 @@ jobs:
               echo -e "发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})"
               echo "${joplin_new_ver}" >joplin_version
           else
-              echo -e "当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" && exit 1
+              echo -e "当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]"
           fi
       - name: Commit files
         run: |
@@ -46,7 +46,7 @@ jobs:
           branch: ${{ github.ref }}
       - name: Download joplin and upload
         run: |
-          sudo apt install jq curl wget -y
+          pwd && cd update/
           echo ${config_json} >config.json
           bash update_joplin.sh
       # - name: send message
