@@ -47,7 +47,7 @@ function clean_file() {
 
 function upload_joplin() {
     cd ${cur_dir}
-    ./LightUploader -c onedrive.json -f "${joplin_new_ver}" -r "public/github-release/laurent22-joplin/" -t 6 -b 20 >>${update_log}
+    ./LightUploader -c config.json -f "${joplin_new_ver}" -r "public/github-release/laurent22-joplin/" -t 6 -b 20 >>${update_log}
 }
 
 function download_joplin() {
