@@ -274,5 +274,4 @@ config/install_gh_secret.sh
 checkin/check.json
 update/config.json
 update/update.log
-# install_gh_secret.sh
-
+install_gh_secret.sh

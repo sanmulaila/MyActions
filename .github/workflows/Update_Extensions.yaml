@@ -21,15 +21,15 @@ jobs:
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
           fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-      - name: Create local changes
+      - name: Update Chrome Extensions
         run: |
           cd update/
           sudo apt install jq curl wget -y
           echo ${config_json} >config.json
-          bash update_chrome_extensions.sh >update.log
-      - name: send message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TG_USER_ID }}
-          token: ${{ secrets.TG_BOT_TOKEN }}
-          message_file: update.log
+          bash update_chrome_extensions.sh
+      # - name: send message
+      #   uses: appleboy/telegram-action@master
+      #   with:
+      #     to: ${{ secrets.TG_USER_ID }}
+      #     token: ${{ secrets.TG_BOT_TOKEN }}
+      #     message_file: update.log

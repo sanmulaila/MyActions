@@ -28,7 +28,7 @@ jobs:
 
           if [[ "${joplin_now_ver}" != "${joplin_new_ver}" ]]; then
               echo -e "发现 Joplin 已有新版本 [ ${joplin_new_ver} ](当前版本：${joplin_now_ver})"
-              echo ${joplin_new_ver} >${joplin_version}
+              echo "${joplin_new_ver}" >joplin_version
           else
               echo -e "当前 Joplin 已是最新版本 [ ${joplin_new_ver} ]" && exit 1
           fi
@@ -44,13 +44,14 @@ jobs:
         with:
           github_token: ${{ secrets.TOKEN }}
           branch: ${{ github.ref }}
-      - name: download joplin and upload
+      - name: Download joplin and upload
         run: |
           sudo apt install jq curl wget -y
-          bash update_joplin.sh>update.log
-      - name: send message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TG_USER_ID }}
-          token: ${{ secrets.TG_BOT_TOKEN }}
-          message_file: update.log
+          echo ${config_json} >config.json
+          bash update_joplin.sh
+      # - name: send message
+      #   uses: appleboy/telegram-action@master
+      #   with:
+      #     to: ${{ secrets.TG_USER_ID }}
+      #     token: ${{ secrets.TG_BOT_TOKEN }}
+      #     message_file: update.log
